@@ -1,0 +1,1431 @@
+{
+	"name": "MITMAS_Dataset_Test",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Postgres/PostgreSQL - Targets/Test"
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "CONO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STAT",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITDS",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FUDS",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DWNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RESP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DCCD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "UNMS",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITGR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITCL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BUAR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "EVGR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITTY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TPCD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MABU",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHCD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STCD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BACD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "VOL3",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "NEWE",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "GRWE",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "PPUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BYPR",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WAPC",
+				"type": "numeric",
+				"precision": 7,
+				"scale": 2
+			},
+			{
+				"name": "QACD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "EPCD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "POCY",
+				"type": "numeric",
+				"precision": 7,
+				"scale": 2
+			},
+			{
+				"name": "ACTI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HIE1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HIE2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HIE3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HIE4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HIE5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GRP1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GRP2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GRP3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GRP4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GRP5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFI1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFI2",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "CFI3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFI4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFI5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ECCC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TXID",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DTID",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ECVE",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ECAC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ECMA",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ECFL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WSCA",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRGP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ETRF",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACRF",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "INDI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PUUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AUTC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ALUC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PDCC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "IEAA",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RIDE",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RIDC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GRTI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GRTS",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "EXPD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITRF",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRCM",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GRMT",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HAZI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SALE",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FRAG",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TAXC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ATMO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ATMN",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TPLI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FCU1",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "SUNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PUPR",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "PUCD",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PPDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SAPR",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "STUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SACD",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUCS",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DIGI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BGRP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRVG",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FRE3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FRE4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "OTDI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BOGR",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRGR",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LAMA",
+				"type": "numeric",
+				"precision": 7,
+				"scale": 2
+			},
+			{
+				"name": "ACHK",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BPEY",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPUC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ALUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "UNNN",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "UNPA",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HAC1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HAC2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HAC3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DIM1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DIM2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DIM3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPE1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPE2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPE3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPE4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPE5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CETY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STCN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPAC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TRPA",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PROD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMFI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TANK",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ARPA",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ARPR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AMPT",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AWDY",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "NPTO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MES1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MES2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MES3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MES4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MVA1",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "MVA2",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "MVA3",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "MVA4",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "PEQ1",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PEQ2",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PEQ3",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PEQ4",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PET1",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PET2",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PET3",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PET4",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MPGM",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ORTY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PLCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MAPL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TOHI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TORE",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FEBA",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MAPN",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DOID",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SEPR",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "STCS",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "NESA",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "NSUF",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FCCM",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DPID",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CONC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PLMZ",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CCO1",
+				"type": "numeric",
+				"precision": 8,
+				"scale": 3
+			},
+			{
+				"name": "CCO2",
+				"type": "numeric",
+				"precision": 8,
+				"scale": 3
+			},
+			{
+				"name": "CCO3",
+				"type": "numeric",
+				"precision": 8,
+				"scale": 3
+			},
+			{
+				"name": "WADY",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TBSR",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "MBSR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TBUR",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "MBUR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TBFR",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "MBFR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AESC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AES2",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AMOR",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FUNC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STNC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DIRR",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "MDIR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SCGR",
+				"type": "numeric",
+				"precision": 4,
+				"scale": 1
+			},
+			{
+				"name": "ARR1",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AEQY",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "LEAI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WAL1",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "WAL2",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "WAL3",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "WAL4",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "IACP",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HDPR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AAD0",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AAD1",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHCL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITRC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "VTCP",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "VTCS",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RGDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RGTM",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LMDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHNO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHID",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LMTS",
+				"type": "timestamp without time zone",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ATNR",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "NMIT",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TECR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "EXCA",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CAWP",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CWUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CPUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ILEN",
+				"type": "numeric",
+				"precision": 8,
+				"scale": 3
+			},
+			{
+				"name": "IWID",
+				"type": "numeric",
+				"precision": 8,
+				"scale": 3
+			},
+			{
+				"name": "IHEI",
+				"type": "numeric",
+				"precision": 8,
+				"scale": 3
+			},
+			{
+				"name": "RNRI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SAFC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RMSG",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MOTP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACMC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACCG",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CCI1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CCCM",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CRI1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITRU",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HVMT",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITNE",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "QMGP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPGV",
+				"type": "numeric",
+				"precision": 15,
+				"scale": 6
+			},
+			{
+				"name": "RUID",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPIH",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "QIRQ",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PDLN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CPGR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SUME",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SUMP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SRGR",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "accountingEntity",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "variationNumber",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "timestamp",
+				"type": "timestamp without time zone",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "deleted",
+				"type": "boolean",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "archived",
+				"type": "boolean",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "public",
+			"table": "MITMAS_2"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

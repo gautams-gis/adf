@@ -1,0 +1,300 @@
+{
+	"name": "OOTYPE",
+	"properties": {
+		"activities": [
+			{
+				"name": "Login",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SetBearer",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Bearer",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "PerformQuery",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PerformQuery",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Query": {
+							"value": "SELECT\n  \"OOTYPE\".\"accountingEntity\",\n  \"OOTYPE\".\"variationNumber\",\n  \"OOTYPE\".\"timestamp\",\n  \"OOTYPE\".\"deleted\",\n  \"OOTYPE\".\"archived\",\n  \"OOTYPE\".\"CONO\",\n  \"OOTYPE\".\"ORTP\",\n  \"OOTYPE\".\"ORTK\",\n  \"OOTYPE\".\"NEXT\",\n  \"OOTYPE\".\"TX40\",\n  \"OOTYPE\".\"TX15\",\n  \"OOTYPE\".\"AUGP\",\n  \"OOTYPE\".\"OT01\",\n  \"OOTYPE\".\"OT04\",\n  \"OOTYPE\".\"OT05\",\n  \"OOTYPE\".\"OT06\",\n  \"OOTYPE\".\"OT10\",\n  \"OOTYPE\".\"OT11\",\n  \"OOTYPE\".\"OT12\",\n  \"OOTYPE\".\"OT14\",\n  \"OOTYPE\".\"OT15\",\n  \"OOTYPE\".\"OT17\",\n  \"OOTYPE\".\"OT18\",\n  \"OOTYPE\".\"OT19\",\n  \"OOTYPE\".\"OT20\",\n  \"OOTYPE\".\"OT22\",\n  \"OOTYPE\".\"OT25\",\n  \"OOTYPE\".\"OT26\",\n  \"OOTYPE\".\"OT30\",\n  \"OOTYPE\".\"OT31\",\n  \"OOTYPE\".\"OT34\",\n  \"OOTYPE\".\"OT35\",\n  \"OOTYPE\".\"OT36\",\n  \"OOTYPE\".\"OT37\",\n  \"OOTYPE\".\"OT38\",\n  \"OOTYPE\".\"OT39\",\n  \"OOTYPE\".\"OT42\",\n  \"OOTYPE\".\"OT45\",\n  \"OOTYPE\".\"OT46\",\n  \"OOTYPE\".\"OT47\",\n  \"OOTYPE\".\"OT53\",\n  \"OOTYPE\".\"OT54\",\n  \"OOTYPE\".\"OT55\",\n  \"OOTYPE\".\"OT59\",\n  \"OOTYPE\".\"OT60\",\n  \"OOTYPE\".\"OT61\",\n  \"OOTYPE\".\"OT63\",\n  \"OOTYPE\".\"OT65\",\n  \"OOTYPE\".\"OT66\",\n  \"OOTYPE\".\"OT67\",\n  \"OOTYPE\".\"OT68\",\n  \"OOTYPE\".\"OT69\",\n  \"OOTYPE\".\"OT70\",\n  \"OOTYPE\".\"OT71\",\n  \"OOTYPE\".\"OT72\",\n  \"OOTYPE\".\"OT73\",\n  \"OOTYPE\".\"OT74\",\n  \"OOTYPE\".\"OT75\",\n  \"OOTYPE\".\"OT77\",\n  \"OOTYPE\".\"SPLM\",\n  \"OOTYPE\".\"OT80\",\n  \"OOTYPE\".\"OT81\",\n  \"OOTYPE\".\"OT84\",\n  \"OOTYPE\".\"OT85\",\n  \"OOTYPE\".\"OT86\",\n  \"OOTYPE\".\"OT88\",\n  \"OOTYPE\".\"PDAD\",\n  \"OOTYPE\".\"QFCT\",\n  \"OOTYPE\".\"CLOE\",\n  \"OOTYPE\".\"CLLE\",\n  \"OOTYPE\".\"CLOQ\",\n  \"OOTYPE\".\"IVGP\",\n  \"OOTYPE\".\"TOLI\",\n  \"OOTYPE\".\"SFUP\",\n  \"OOTYPE\".\"QTTH\",\n  \"OOTYPE\".\"PAVR\",\n  \"OOTYPE\".\"PAV2\",\n  \"OOTYPE\".\"AGWU\",\n  \"OOTYPE\".\"ROPP\",\n  \"OOTYPE\".\"IVLV\",\n  \"OOTYPE\".\"SPIC\",\n  \"OOTYPE\".\"AGCL\",\n  \"OOTYPE\".\"TXID\",\n  \"OOTYPE\".\"OT89\",\n  \"OOTYPE\".\"DEFC\",\n  \"OOTYPE\".\"ROPK\",\n  \"OOTYPE\".\"DPOL\",\n  \"OOTYPE\".\"SEAH\",\n  \"OOTYPE\".\"SCMO\",\n  \"OOTYPE\".\"PRMS\",\n  \"OOTYPE\".\"PTRG\",\n  \"OOTYPE\".\"PTQC\",\n  \"OOTYPE\".\"QDCK\",\n  \"OOTYPE\".\"QSCK\",\n  \"OOTYPE\".\"AUBC\",\n  \"OOTYPE\".\"DELA\",\n  \"OOTYPE\".\"UPDE\",\n  \"OOTYPE\".\"PCKA\",\n  \"OOTYPE\".\"QLCH\",\n  \"OOTYPE\".\"PDCH\",\n  \"OOTYPE\".\"BEPR\",\n  \"OOTYPE\".\"AOPT\",\n  \"OOTYPE\".\"RGDT\",\n  \"OOTYPE\".\"RGTM\",\n  CAST(DATEDIFF(millisecond,'1970-01-01 00:00:00',LMTS) AS BIGINT) AS \"LMTS\",\n  \"OOTYPE\".\"LMDT\",\n  \"OOTYPE\".\"CHNO\",\n  \"OOTYPE\".\"CHID\",\n  \"OOTYPE\".\"OT91\",\n  \"OOTYPE\".\"XTPI\",\n  \"OOTYPE\".\"OT79\",\n  \"OOTYPE\".\"TAXC\",\n  \"OOTYPE\".\"BOP1\",\n  \"OOTYPE\".\"RPRQ\",\n  \"OOTYPE\".\"QTTB\",\n  \"OOTYPE\".\"ARES\",\n  \"OOTYPE\".\"INOR\",\n  \"OOTYPE\".\"VTDE\",\n  \"OOTYPE\".\"PRSE\",\n  \"OOTYPE\".\"PAV4\",\n  \"OOTYPE\".\"CAPM\",\n  \"OOTYPE\".\"UOVW\",\n  \"OOTYPE\".\"OT92\",\n  \"OOTYPE\".\"CRAD\",\n  \"OOTYPE\".\"ITSC\",\n  \"OOTYPE\".\"OT83\",\n  \"OOTYPE\".\"RACH\",\n  \"OOTYPE\".\"OTA6\",\n  \"OOTYPE\".\"PRGU\",\n  \"OOTYPE\".\"OBPG\",\n  \"OOTYPE\".\"MIXO\",\n  \"OOTYPE\".\"DANC\",\n  \"OOTYPE\".\"ICTR\",\n  \"OOTYPE\".\"LS03\",\n  \"OOTYPE\".\"RS03\",\n  \"OOTYPE\".\"LS04\",\n  \"OOTYPE\".\"RS04\",\n  \"OOTYPE\".\"QR15\",\n  \"OOTYPE\".\"RS15\",\n  \"OOTYPE\".\"QR16\",\n  \"OOTYPE\".\"RS16\",\n  \"OOTYPE\".\"NFDI\",\n  \"OOTYPE\".\"RCRU\",\n  \"OOTYPE\".\"CSTA\"\nFROM\n  \"OOTYPE\"",
+							"type": "Expression"
+						},
+						"BaseURL": "https://mingle-ionapi.inforcloudsuite.com/EMCO_TST/DATAFABRIC/compass/v2/",
+						"BearerToken": {
+							"value": "@variables('Bearer')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "UntilRecordCountReached",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetCurrentRow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetLimit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PerformQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(int(variables('CurrentRow')), activity('PerformQuery').output.pipelineReturnValue.RowCount)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy OOTYPE Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"maxConcurrentConnections": 1,
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "Authorization: @{variables('Bearer')}\nAccept: text/csv",
+											"type": "Expression"
+										},
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzurePostgreSQLSink",
+									"writeBatchSize": 1000000,
+									"writeBatchTimeout": "00:30:00",
+									"writeMethod": "CopyCommand"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Compass_OOTYPE_Dataset",
+									"type": "DatasetReference",
+									"parameters": {
+										"QueryId": {
+											"value": "@activity('PerformQuery').output.pipelineReturnValue.QueryId",
+											"type": "Expression"
+										},
+										"Limit": {
+											"value": "@int(variables('Limit'))",
+											"type": "Expression"
+										},
+										"Offset": {
+											"value": "@int(variables('CurrentRow'))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "OOTYPE_Dataset",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "WriteCurrentRowVariable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "PerformMathOnCurrentRow",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentRow",
+								"value": {
+									"value": "@variables('TempCurrentRow')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "PerformMathOnCurrentRow",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy OOTYPE Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCurrentRow",
+								"value": {
+									"value": "@string(add(int(variables('CurrentRow')), int(variables('Limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FailUntilLoop",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Copy OOTYPE Data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "UnableToCopyData",
+								"errorCode": "2"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "SetCurrentRow",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentRow",
+					"value": "0"
+				}
+			},
+			{
+				"name": "SetLimit",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Limit",
+					"value": "50000"
+				}
+			}
+		],
+		"variables": {
+			"Bearer": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/POC Tables - Full Refresh"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

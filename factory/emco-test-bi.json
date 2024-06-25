@@ -1,0 +1,17 @@
+{
+	"name": "emco-test-bi",
+	"properties": {
+		"globalParameters": {
+			"test_string": {
+				"type": "string",
+				"value": "Test"
+			}
+		}
+	},
+	"location": "canadacentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "bc6f835b-37e1-4ca9-a488-2e02a2edab74",
+		"tenantId": "9629793a-5e4b-4b04-b785-6cd0391bf8cc"
+	}
+}

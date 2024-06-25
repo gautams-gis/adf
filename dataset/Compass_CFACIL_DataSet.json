@@ -1,0 +1,42 @@
+{
+	"name": "Compass_CFACIL_DataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "EMCO_TST",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"QueryId": {
+				"type": "string"
+			},
+			"Limit": {
+				"type": "int",
+				"defaultValue": 50000
+			},
+			"Offset": {
+				"type": "int",
+				"defaultValue": 0
+			}
+		},
+		"folder": {
+			"name": "TST/Compass - Source - TST"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "@concat(dataset().QueryId, '/result?queryExecutor=datalake&limit=', string(dataset().Limit),'&offset=', string(dataset().Offset))",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\"",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

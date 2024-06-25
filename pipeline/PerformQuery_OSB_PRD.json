@@ -1,0 +1,578 @@
+{
+	"name": "PerformQuery_OSB_PRD",
+	"properties": {
+		"activities": [
+			{
+				"name": "SubmitQuery",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "SetBaseURL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetBearerToken 2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Authorization": {
+							"value": "@variables('BearerToken')",
+							"type": "Expression"
+						},
+						"Content-Type": "text/plain",
+						"Accept": "*/*",
+						"Connection": "keep-alive",
+						"Accept-Encoding": "gzip, deflate, br"
+					},
+					"url": {
+						"value": "@concat(variables('BaseURL'), 'jobs')",
+						"type": "Expression"
+					},
+					"body": {
+						"value": "@pipeline().parameters.Query",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetStatus",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SubmitQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Status",
+					"value": {
+						"value": "@activity('SubmitQuery').output.status",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetQueryID",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SubmitQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "QueryID",
+					"value": {
+						"value": "@activity('SubmitQuery').output.queryId",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetBaseURL",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "BaseURL",
+					"value": {
+						"value": "@pipeline().parameters.BaseURL",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetStatusURL",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SubmitQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "StatusURL",
+					"value": {
+						"value": "@activity('SubmitQuery').output.location",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "WhileStatusRunningOrTransforming",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetStatus",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetStatusURL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetQueryID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(or(equals(variables('Status'),'RUNNING'),equals(variables('Status'), 'TRANSFORMING')))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "CheckStatus",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "GET",
+								"headers": {
+									"Authorization": {
+										"value": "@variables('BearerToken')",
+										"type": "Expression"
+									},
+									"Content-Type": "text/plain",
+									"Accept": "*/*",
+									"Connection": "keep-alive",
+									"Accept-Encoding": "gzip, deflate, br"
+								},
+								"url": {
+									"value": "@concat(variables('BaseURL'), variables('StatusURL'))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Until_SetStatus",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "CheckStatus",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Status",
+								"value": {
+									"value": "@activity('CheckStatus').output.status",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "If_StatusRunningOrTransforming",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Until_SetStatus",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@or(equals(variables('Status'),'RUNNING'),equals(variables('Status'), 'TRANSFORMING'))",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Wait_ForStatus",
+										"type": "Wait",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"waitTimeInSeconds": 180
+										}
+									}
+								]
+							}
+						}
+					],
+					"timeout": "1.12:00:00"
+				}
+			},
+			{
+				"name": "If_StatusFinished",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "WhileStatusRunningOrTransforming",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('Status'), 'FINISHED')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "StatusFail",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "Status of API Call was not FINISHED",
+								"errorCode": "1"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "CheckStatus_Finished",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "If_StatusFinished",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "@variables('BearerToken')",
+							"type": "Expression"
+						},
+						"Content-Type": "text/plain",
+						"Accept": "*/*",
+						"Connection": "keep-alive",
+						"Accept-Encoding": "gzip, deflate, br"
+					},
+					"url": {
+						"value": "@concat(variables('BaseURL'), variables('StatusURL'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "SetPipelineOutput",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "CheckStatus_Finished",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineReturnValue",
+					"value": [
+						{
+							"key": "RowCount",
+							"value": {
+								"type": "Expression",
+								"content": "@activity('CheckStatus_Finished').output.rowCount"
+							}
+						},
+						{
+							"key": "QueryId",
+							"value": {
+								"type": "Expression",
+								"content": "@variables('QueryID')"
+							}
+						}
+					],
+					"setSystemVariable": true
+				}
+			},
+			{
+				"name": "SetBearerToken 2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login 3",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "BearerToken",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login 3').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Login 3",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login_PRD",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Set False 2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SetBearerToken 2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ContinueLoop",
+					"value": {
+						"value": "@bool(0)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Renewal Token 2",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set False 2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@variables('ContinueLoop')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Wait 10 Mins",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 600
+							}
+						},
+						{
+							"name": "SetBearerToken",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Login_4",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "BearerToken",
+								"value": {
+									"value": "@concat('Bearer ',activity('Login_4').output.pipelineReturnValue.access_token)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Login_4",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Wait 10 Mins",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Login_PRD",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					],
+					"timeout": "2.02:00:00"
+				}
+			},
+			{
+				"name": "Stop renewal 2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "SetPipelineOutput",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ContinueLoop",
+					"value": {
+						"value": "@bool(1)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"Query": {
+				"type": "string"
+			},
+			"BaseURL": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"QueryID": {
+				"type": "String"
+			},
+			"Status": {
+				"type": "String"
+			},
+			"BearerToken": {
+				"type": "String"
+			},
+			"BaseURL": {
+				"type": "String"
+			},
+			"StatusURL": {
+				"type": "String"
+			},
+			"RowCount": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			},
+			"ContinueLoop": {
+				"type": "Boolean"
+			}
+		},
+		"folder": {
+			"name": "PRD/Template Pipeline PRD"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

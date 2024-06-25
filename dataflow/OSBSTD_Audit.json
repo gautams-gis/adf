@@ -1,0 +1,85 @@
+{
+	"name": "OSBSTD_Audit",
+	"properties": {
+		"folder": {
+			"name": "Audit"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "OSBSTD_audit",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "OSBSTD_audit",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          table_name as string,",
+				"          start_month as timestamp,",
+				"          end_month as timestamp,",
+				"          status as string,",
+				"          source_record_count as integer,",
+				"          target_record_count as integer",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 derive(end_month = addMonths(start_month, 1),",
+				"          table_name = iif(isNull(table_name), 'OSBSTD', toString(null())),",
+				"          status = iif(isNull(table_name), 'Not Extracted', toString(null()))) ~> derivedColumn1",
+				"alterRow1 sort(asc(start_month, true)) ~> sort1",
+				"derivedColumn1 alterRow(upsertIf(true())) ~> alterRow1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          table_name as string,",
+				"          start_month as timestamp,",
+				"          end_month as timestamp,",
+				"          status as string,",
+				"          source_record_count as integer,",
+				"          target_record_count as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:false,",
+				"     upsertable:true,",
+				"     keys:['start_month'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          table_name,",
+				"          start_month,",
+				"          end_month,",
+				"          status,",
+				"          source_record_count,",
+				"          target_record_count",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

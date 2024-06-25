@@ -1,0 +1,548 @@
+{
+	"name": "Master_OSBSTD_FullLoad_Months_PRD",
+	"properties": {
+		"activities": [
+			{
+				"name": "Update_Failure_Log",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Set End Date Fail",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Log_Update",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"pipeline_name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"data_start_date": {
+							"value": "@variables('start_date')",
+							"type": "Expression"
+						},
+						"date_end_date": {
+							"value": "@variables('end_date')",
+							"type": "Expression"
+						},
+						"load_type": {
+							"value": "@variables('load_type')",
+							"type": "Expression"
+						},
+						"job_status": "fail",
+						"log_table_name": {
+							"value": "public.\"job_monitor\"",
+							"type": "Expression"
+						},
+						"source": "compass"
+					}
+				}
+			},
+			{
+				"name": "Update_Success_Log",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Set End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Log_Update",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"pipeline_name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"data_start_date": {
+							"value": "@variables('start_date')",
+							"type": "Expression"
+						},
+						"date_end_date": {
+							"value": "@variables('end_date')",
+							"type": "Expression"
+						},
+						"load_type": {
+							"value": "@variables('load_type')",
+							"type": "Expression"
+						},
+						"job_status": "success",
+						"log_table_name": {
+							"value": "public.\"job_monitor\"",
+							"type": "Expression"
+						},
+						"source": "compass"
+					}
+				}
+			},
+			{
+				"name": "Get Months from Audit",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Get Month Data Audit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "select \"start_month\", \"end_month\"\nfrom public.\"audit_osbstd\"\nwhere status != 'Extracted';\n\nselect 1 as out;",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OSBSTD_audit",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Set Array",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Months from Audit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "start_arr",
+					"value": {
+						"value": "@activity('Get Months from Audit').output.value\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Set Array",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('start_arr')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "OSBSTD FullLoad",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Set end month",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "OSBSTD_STAGING_FullLoad_Months_PRD",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"start_month": {
+										"value": "@variables('start_month')",
+										"type": "Expression"
+									},
+									"end_month": {
+										"value": "@variables('end_month')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Set start month",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "start_month",
+								"value": {
+									"value": "@formatDateTime(string(item().start_month), 'yyyy-MM-dd HH:mm:ss')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set end month",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set start month",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "end_month",
+								"value": {
+									"value": "@formatDateTime(string(item().end_month), 'yyyy-MM-dd HH:mm:ss')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Update Success Audit",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "OSBSTD FullLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzurePostgreSqlSource",
+									"query": {
+										"value": "UPDATE public.audit_osbstd\nSET status = 'Extracted'\nWHERE start_month = '@{variables('start_month')}'\nand\nend_month = '@{variables('end_month')}';\n\nselect 1 as out;",
+										"type": "Expression"
+									},
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "OSBSTD_audit",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Update Fail Audit",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "OSBSTD FullLoad",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzurePostgreSqlSource",
+									"query": {
+										"value": "UPDATE public.audit_osbstd\nSET status = 'Fail'\nWHERE start_month = '@{variables('start_month')}'\nand\nend_month = '@{variables('end_month')}';\n\nselect 1 as out;",
+										"type": "Expression"
+									},
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "OSBSTD_audit",
+									"type": "DatasetReference"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Get Start Month Audit",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "OSBSTD_Audit_PRD",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Get Month Data Audit",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Get Start Month Audit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "OSBSTD_Audit",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Get Data End Date",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Staging_To_Target",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "select MAX(\"timestamp\") as max_ts\nfrom public.\"OSBSTD_ST_test\";\n",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OSBSTD_ST_test",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set End Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Data End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "end_date",
+					"value": {
+						"value": "@formatDateTime(activity('Get Data End Date').output.firstRow.max_ts,'yyyy-MM-dd HH:mm:ss.fff')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Data End Date Fail",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Staging_To_Target",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "select MAX(\"timestamp\") as max_ts\nfrom public.\"OSBSTD_ST_test\";\n",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OSBSTD_ST_test",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set End Date Fail",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Data End Date Fail",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "end_date",
+					"value": {
+						"value": "@formatDateTime(activity('Get Data End Date Fail').output.firstRow.max_ts,'yyyy-MM-dd HH:mm:ss.fff')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Staging_To_Target",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "2.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "OSBSTD",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 32,
+						"computeType": "MemoryOptimized"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"variables": {
+			"start_date": {
+				"type": "String"
+			},
+			"end_date": {
+				"type": "String"
+			},
+			"load_type": {
+				"type": "String",
+				"defaultValue": "full_load"
+			},
+			"date_array": {
+				"type": "Array"
+			},
+			"start_arr": {
+				"type": "Array"
+			},
+			"start_month": {
+				"type": "String"
+			},
+			"end_month": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "PRD/Tables_PRD/Master_PRD"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

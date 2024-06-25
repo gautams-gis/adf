@@ -1,0 +1,153 @@
+{
+	"name": "CSYTAB_ST",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Postgres/PostgreSQL - Staging"
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "CONO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DIVI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STCO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STKY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LNCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TX40",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TX15",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PARM",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TXID",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RGDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RGTM",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LMDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHNO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHID",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LMTS",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DTID",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MGSQ",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "accountingEntity",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "variationNumber",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "timestamp",
+				"type": "timestamp without time zone",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "deleted",
+				"type": "boolean",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "archived",
+				"type": "boolean",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "public",
+			"table": "CSYTAB_ST"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

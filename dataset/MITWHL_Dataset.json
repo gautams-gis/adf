@@ -1,0 +1,561 @@
+{
+	"name": "MITWHL_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Postgres/PostgreSQL - Targets"
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "CONO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WHLO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WHNM",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DIVI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FACI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WHTY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WHSY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WHPL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "OREF",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PHNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "COMA",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SUNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SDES",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SHNM",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PLIS",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CSCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ECAR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "VRNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LNCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CPWH",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AUAD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ALWH",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ALAC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RESP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TWSL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GEOC",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TAXC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "UNST",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TXID",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DTID",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AASQ",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF0",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF1",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF2",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF3",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF4",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF5",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF6",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF7",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF8",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMF9",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "INUL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "EPUL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "EXDL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PIDL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ALWQ",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITDL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CDYN",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PATF",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PAHF",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PMTF",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PMHF",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DDLO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CDPD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CDPM",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CALV",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACGR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "NBID",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STOF",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ASOT",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DAAS",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LEAM",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMFC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LSPM",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RSTN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RGDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RGTM",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LMDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHNO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHID",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LMTS",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CPTE",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SCED",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GEOX",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "GEOY",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "GEOZ",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "PRIO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PWGR",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RDIL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TCUW",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "WOPC",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "BLPM",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PORG",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RFT2",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "accountingEntity",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "variationNumber",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "timestamp",
+				"type": "timestamp without time zone",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "deleted",
+				"type": "boolean",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "archived",
+				"type": "boolean",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "public",
+			"table": "MITWHL"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

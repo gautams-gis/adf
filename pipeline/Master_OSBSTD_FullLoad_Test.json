@@ -1,0 +1,251 @@
+{
+	"name": "Master_OSBSTD_FullLoad_Test",
+	"properties": {
+		"activities": [
+			{
+				"name": "OSBSTD FullLoad",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "OSBSTD_STAGING_FullLoad",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Update_Failure_Log",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Set End Date Fail",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Log_Update",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"pipeline_name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"data_start_date": {
+							"value": "@variables('start_date')",
+							"type": "Expression"
+						},
+						"date_end_date": {
+							"value": "@variables('end_date')",
+							"type": "Expression"
+						},
+						"load_type": {
+							"value": "@variables('load_type')",
+							"type": "Expression"
+						},
+						"job_status": "fail",
+						"log_table_name": {
+							"value": "public.\"job_monitor\"",
+							"type": "Expression"
+						},
+						"source": "compass"
+					}
+				}
+			},
+			{
+				"name": "Update_Success_Log",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Set End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Log_Update",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"pipeline_name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"data_start_date": {
+							"value": "@variables('start_date')",
+							"type": "Expression"
+						},
+						"date_end_date": {
+							"value": "@variables('end_date')",
+							"type": "Expression"
+						},
+						"load_type": {
+							"value": "@variables('load_type')",
+							"type": "Expression"
+						},
+						"job_status": "success",
+						"log_table_name": {
+							"value": "public.\"job_monitor\"",
+							"type": "Expression"
+						},
+						"source": "compass"
+					}
+				}
+			},
+			{
+				"name": "Get Data End Date",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "OSBSTD FullLoad",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "select MAX(\"timestamp\") as max_ts\nfrom public.\"OSBSTD\";\n",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OSBSTD_Dataset",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set End Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Data End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "end_date",
+					"value": {
+						"value": "@formatDateTime(activity('Get Data End Date').output.firstRow.max_ts,'yyyy-MM-dd HH:mm:ss.fff')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Data End Date Fail",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "OSBSTD FullLoad",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "select MAX(\"timestamp\") as max_ts\nfrom public.\"OSBSTD\";\n",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OSBSTD_Dataset",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set End Date Fail",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Data End Date Fail",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "end_date",
+					"value": {
+						"value": "@formatDateTime(activity('Get Data End Date Fail').output.firstRow.max_ts,'yyyy-MM-dd HH:mm:ss.fff')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"start_date": {
+				"type": "String"
+			},
+			"end_date": {
+				"type": "String"
+			},
+			"load_type": {
+				"type": "String",
+				"defaultValue": "full_load"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

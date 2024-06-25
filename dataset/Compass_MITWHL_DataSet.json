@@ -1,0 +1,403 @@
+{
+	"name": "Compass_MITWHL_DataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "EMCO_TST",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"QueryId": {
+				"type": "string"
+			},
+			"Limit": {
+				"type": "int",
+				"defaultValue": 50000
+			},
+			"Offset": {
+				"type": "int",
+				"defaultValue": 0
+			}
+		},
+		"folder": {
+			"name": "TST/Compass - Source - TST"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "@concat(dataset().QueryId, '/result?queryExecutor=datalake&limit=', string(dataset().Limit),'&offset=', string(dataset().Offset))",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\"",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "CONO",
+				"type": "String"
+			},
+			{
+				"name": "WHLO",
+				"type": "String"
+			},
+			{
+				"name": "WHNM",
+				"type": "String"
+			},
+			{
+				"name": "DIVI",
+				"type": "String"
+			},
+			{
+				"name": "FACI",
+				"type": "String"
+			},
+			{
+				"name": "WHTY",
+				"type": "String"
+			},
+			{
+				"name": "WHSY",
+				"type": "String"
+			},
+			{
+				"name": "WHPL",
+				"type": "String"
+			},
+			{
+				"name": "OREF",
+				"type": "String"
+			},
+			{
+				"name": "PHNO",
+				"type": "String"
+			},
+			{
+				"name": "COMA",
+				"type": "String"
+			},
+			{
+				"name": "CUNO",
+				"type": "String"
+			},
+			{
+				"name": "SUNO",
+				"type": "String"
+			},
+			{
+				"name": "SDES",
+				"type": "String"
+			},
+			{
+				"name": "SHNM",
+				"type": "String"
+			},
+			{
+				"name": "PLIS",
+				"type": "String"
+			},
+			{
+				"name": "CSCD",
+				"type": "String"
+			},
+			{
+				"name": "ECAR",
+				"type": "String"
+			},
+			{
+				"name": "VRNO",
+				"type": "String"
+			},
+			{
+				"name": "LNCD",
+				"type": "String"
+			},
+			{
+				"name": "CPWH",
+				"type": "String"
+			},
+			{
+				"name": "AUAD",
+				"type": "String"
+			},
+			{
+				"name": "ALWH",
+				"type": "String"
+			},
+			{
+				"name": "ALAC",
+				"type": "String"
+			},
+			{
+				"name": "RESP",
+				"type": "String"
+			},
+			{
+				"name": "TWSL",
+				"type": "String"
+			},
+			{
+				"name": "GEOC",
+				"type": "String"
+			},
+			{
+				"name": "TAXC",
+				"type": "String"
+			},
+			{
+				"name": "UNST",
+				"type": "String"
+			},
+			{
+				"name": "TXID",
+				"type": "String"
+			},
+			{
+				"name": "DTID",
+				"type": "String"
+			},
+			{
+				"name": "AASQ",
+				"type": "String"
+			},
+			{
+				"name": "DMF0",
+				"type": "String"
+			},
+			{
+				"name": "DMF1",
+				"type": "String"
+			},
+			{
+				"name": "DMF2",
+				"type": "String"
+			},
+			{
+				"name": "DMF3",
+				"type": "String"
+			},
+			{
+				"name": "DMF4",
+				"type": "String"
+			},
+			{
+				"name": "DMF5",
+				"type": "String"
+			},
+			{
+				"name": "DMF6",
+				"type": "String"
+			},
+			{
+				"name": "DMF7",
+				"type": "String"
+			},
+			{
+				"name": "DMF8",
+				"type": "String"
+			},
+			{
+				"name": "DMF9",
+				"type": "String"
+			},
+			{
+				"name": "INUL",
+				"type": "String"
+			},
+			{
+				"name": "EPUL",
+				"type": "String"
+			},
+			{
+				"name": "EXDL",
+				"type": "String"
+			},
+			{
+				"name": "PIDL",
+				"type": "String"
+			},
+			{
+				"name": "ALWQ",
+				"type": "String"
+			},
+			{
+				"name": "ITDL",
+				"type": "String"
+			},
+			{
+				"name": "CDYN",
+				"type": "String"
+			},
+			{
+				"name": "PATF",
+				"type": "String"
+			},
+			{
+				"name": "PAHF",
+				"type": "String"
+			},
+			{
+				"name": "PMTF",
+				"type": "String"
+			},
+			{
+				"name": "PMHF",
+				"type": "String"
+			},
+			{
+				"name": "DDLO",
+				"type": "String"
+			},
+			{
+				"name": "CDPD",
+				"type": "String"
+			},
+			{
+				"name": "CDPM",
+				"type": "String"
+			},
+			{
+				"name": "CALV",
+				"type": "String"
+			},
+			{
+				"name": "ACGR",
+				"type": "String"
+			},
+			{
+				"name": "NBID",
+				"type": "String"
+			},
+			{
+				"name": "STOF",
+				"type": "String"
+			},
+			{
+				"name": "ASOT",
+				"type": "String"
+			},
+			{
+				"name": "DAAS",
+				"type": "String"
+			},
+			{
+				"name": "LEAM",
+				"type": "String"
+			},
+			{
+				"name": "DMFC",
+				"type": "String"
+			},
+			{
+				"name": "LSPM",
+				"type": "String"
+			},
+			{
+				"name": "RSTN",
+				"type": "String"
+			},
+			{
+				"name": "RGDT",
+				"type": "String"
+			},
+			{
+				"name": "RGTM",
+				"type": "String"
+			},
+			{
+				"name": "LMDT",
+				"type": "String"
+			},
+			{
+				"name": "CHNO",
+				"type": "String"
+			},
+			{
+				"name": "CHID",
+				"type": "String"
+			},
+			{
+				"name": "LMTS",
+				"type": "String"
+			},
+			{
+				"name": "CPTE",
+				"type": "String"
+			},
+			{
+				"name": "SCED",
+				"type": "String"
+			},
+			{
+				"name": "GEOX",
+				"type": "String"
+			},
+			{
+				"name": "GEOY",
+				"type": "String"
+			},
+			{
+				"name": "GEOZ",
+				"type": "String"
+			},
+			{
+				"name": "PRIO",
+				"type": "String"
+			},
+			{
+				"name": "PWGR",
+				"type": "String"
+			},
+			{
+				"name": "RDIL",
+				"type": "String"
+			},
+			{
+				"name": "TCUW",
+				"type": "String"
+			},
+			{
+				"name": "WOPC",
+				"type": "String"
+			},
+			{
+				"name": "BLPM",
+				"type": "String"
+			},
+			{
+				"name": "PORG",
+				"type": "String"
+			},
+			{
+				"name": "RFT2",
+				"type": "String"
+			},
+			{
+				"name": "accountingEntity",
+				"type": "String"
+			},
+			{
+				"name": "archived",
+				"type": "String"
+			},
+			{
+				"name": "deleted",
+				"type": "String"
+			},
+			{
+				"name": "timestamp",
+				"type": "String"
+			},
+			{
+				"name": "variationNumber",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

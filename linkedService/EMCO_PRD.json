@@ -1,0 +1,13 @@
+{
+	"name": "EMCO_PRD",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://mingle-ionapi.inforcloudsuite.com/EMCO_PRD/DATAFABRIC/compass/v2/jobs/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

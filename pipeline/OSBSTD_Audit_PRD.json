@@ -1,0 +1,320 @@
+{
+	"name": "OSBSTD_Audit_PRD",
+	"properties": {
+		"activities": [
+			{
+				"name": "Login",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login_PRD",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SetBearer",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Bearer",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "PerformQuery",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PerformQuery_PRD",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Query": {
+							"value": "SELECT DISTINCT\n  (CONVERT(varchar(7), \"timestamp\", 120)) as \"year_month\"\n  FROM\n  \"OSBSTD\"\n",
+							"type": "Expression"
+						},
+						"BaseURL": {
+							"value": "https://mingle-ionapi.inforcloudsuite.com/EMCO_PRD/DATAFABRIC/compass/v2/",
+							"type": "Expression"
+						},
+						"BearerToken": {
+							"value": "@variables('Bearer')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "UntilRecordCountReached",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetCurrentRow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetLimit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PerformQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(int(variables('CurrentRow')), activity('PerformQuery').output.pipelineReturnValue.RowCount)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy OSBSTD Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"maxConcurrentConnections": 1,
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "Authorization: @{variables('Bearer')}\nAccept: text/csv",
+											"type": "Expression"
+										},
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzurePostgreSQLSink",
+									"writeBatchSize": 1000000,
+									"writeBatchTimeout": "00:30:00",
+									"writeMethod": "CopyCommand"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "year_month",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "start_month",
+												"type": "DateTime",
+												"physicalType": "timestamp without time zone"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Compass_OSBSTD_DataSet_PRD",
+									"type": "DatasetReference",
+									"parameters": {
+										"QueryId": {
+											"value": "@activity('PerformQuery').output.pipelineReturnValue.QueryId",
+											"type": "Expression"
+										},
+										"Limit": {
+											"value": "@int(variables('Limit'))",
+											"type": "Expression"
+										},
+										"Offset": {
+											"value": "@int(variables('CurrentRow'))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "OSBSTD_audit",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "WriteCurrentRowVariable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "PerformMathOnCurrentRow",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentRow",
+								"value": {
+									"value": "@variables('TempCurrentRow')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "PerformMathOnCurrentRow",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy OSBSTD Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCurrentRow",
+								"value": {
+									"value": "@string(add(int(variables('CurrentRow')), int(variables('Limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FailUntilLoop",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Copy OSBSTD Data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "UnableToCopyData",
+								"errorCode": "2"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "SetCurrentRow",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentRow",
+					"value": "0"
+				}
+			},
+			{
+				"name": "SetLimit",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Limit",
+					"value": "50000"
+				}
+			}
+		],
+		"variables": {
+			"Bearer": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			},
+			"start_data_timestamp": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "PRD/Tables_PRD/Staging Pipeline PRD"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

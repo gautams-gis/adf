@@ -1,0 +1,721 @@
+{
+	"name": "CSYCAL_STAGING",
+	"properties": {
+		"activities": [
+			{
+				"name": "Login",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SetBearer",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Bearer",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "PerformQuery",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PerformQuery",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Query": {
+							"value": "SELECT\n  \"CSYCAL\".\"accountingEntity\",\n  \"CSYCAL\".\"variationNumber\",\n  \"CSYCAL\".\"timestamp\",\n  \"CSYCAL\".\"deleted\",\n  \"CSYCAL\".\"archived\",\n  \"CSYCAL\".\"CONO\",\n  \"CSYCAL\".\"DIVI\",\n  \"CSYCAL\".\"YMD8\",\n  \"CSYCAL\".\"UDF8\",\n  \"CSYCAL\".\"YMD6\",\n  \"CSYCAL\".\"UDF6\",\n  \"CSYCAL\".\"DMY6\",\n  \"CSYCAL\".\"MDY6\",\n  \"CSYCAL\".\"YWD5\",\n  \"CSYCAL\".\"CDNO\",\n  \"CSYCAL\".\"WDNO\",\n  \"CSYCAL\".\"BDNO\",\n  \"CSYCAL\".\"YDNO\",\n  \"CSYCAL\".\"WDPC\",\n  \"CSYCAL\".\"BDAY\",\n  \"CSYCAL\".\"BDAD\",\n  \"CSYCAL\".\"DUAD\",\n  \"CSYCAL\".\"CYP1\",\n  \"CSYCAL\".\"CYP2\",\n  \"CSYCAL\".\"CYP3\",\n  \"CSYCAL\".\"CYP4\",\n  \"CSYCAL\".\"CYP5\",\n  \"CSYCAL\".\"GDAY\",\n  \"CSYCAL\".\"GDNO\",\n  \"CSYCAL\".\"DDAY\",\n  \"CSYCAL\".\"DDNO\",\n  \"CSYCAL\".\"PODY\",\n  (CAST(\"LMTS\" AS timestamp)) AS \"LMTS\",\n  \"CSYCAL\".\"ADAE\"\nFROM\n  \"CSYCAL\"\nWHERE\n  (\"timestamp\" >= '@{pipeline().parameters.start_date}')\n  and\n  (\"timestamp\" <= '@{pipeline().parameters.end_date}')",
+							"type": "Expression"
+						},
+						"BaseURL": {
+							"value": "https://mingle-ionapi.inforcloudsuite.com/EMCO_TST/DATAFABRIC/compass/v2/",
+							"type": "Expression"
+						},
+						"BearerToken": {
+							"value": "@variables('Bearer')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "UntilRecordCountReached",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetCurrentRow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetLimit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PerformQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(int(variables('CurrentRow')), activity('PerformQuery').output.pipelineReturnValue.RowCount)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"maxConcurrentConnections": 1,
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "Authorization: @{variables('Bearer')}\nAccept: text/csv",
+											"type": "Expression"
+										},
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzurePostgreSQLSink",
+									"writeBatchSize": 1000000,
+									"writeBatchTimeout": "00:30:00",
+									"writeMethod": "CopyCommand"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "CONO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CONO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIVI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIVI",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "YMD8",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "YMD8",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "UDF8",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UDF8",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "YMD6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "YMD6",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "UDF6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UDF6",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "DMY6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMY6",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "MDY6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MDY6",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "YWD5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "YWD5",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CDNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CDNO",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "WDNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WDNO",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "BDNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BDNO",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "YDNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "YDNO",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "WDPC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WDPC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "BDAY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BDAY",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "BDAD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BDAD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DUAD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DUAD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CYP1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CYP1",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CYP2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CYP2",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CYP3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CYP3",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CYP4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CYP4",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CYP5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CYP5",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "GDAY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "GDAY",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "GDNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "GDNO",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "DDAY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DDAY",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DDNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DDNO",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "PODY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PODY",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "LMTS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LMTS",
+												"type": "DateTime",
+												"physicalType": "timestamp without time zone"
+											}
+										},
+										{
+											"source": {
+												"name": "ADAE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ADAE",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "accountingEntity",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "accountingEntity",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "variationNumber",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "variationNumber",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "timestamp",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "timestamp",
+												"type": "DateTime",
+												"physicalType": "timestamp without time zone"
+											}
+										},
+										{
+											"source": {
+												"name": "deleted",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "deleted",
+												"type": "Boolean",
+												"physicalType": "boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "archived",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "archived",
+												"type": "Boolean",
+												"physicalType": "boolean"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Compass_CSYCAL_DataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"QueryId": {
+											"value": "@activity('PerformQuery').output.pipelineReturnValue.QueryId",
+											"type": "Expression"
+										},
+										"Limit": {
+											"value": "@int(variables('Limit'))",
+											"type": "Expression"
+										},
+										"Offset": {
+											"value": "@int(variables('CurrentRow'))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "CSYCAL_ST",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "WriteCurrentRowVariable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "PerformMathOnCurrentRow",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentRow",
+								"value": {
+									"value": "@variables('TempCurrentRow')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "PerformMathOnCurrentRow",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCurrentRow",
+								"value": {
+									"value": "@string(add(int(variables('CurrentRow')), int(variables('Limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FailUntilLoop",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "UnableToCopyData",
+								"errorCode": "2"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "SetCurrentRow",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentRow",
+					"value": "0"
+				}
+			},
+			{
+				"name": "SetLimit",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Limit",
+					"value": "50000"
+				}
+			}
+		],
+		"parameters": {
+			"start_date": {
+				"type": "string"
+			},
+			"end_date": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"Bearer": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/Staging Pipeline"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

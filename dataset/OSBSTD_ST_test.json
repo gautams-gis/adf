@@ -1,0 +1,1485 @@
+{
+	"name": "OSBSTD_ST_test",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Postgres/PostgreSQL - Targets"
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "CONO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DIVI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ORNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DLIX",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PONR",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "POSX",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WHLO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ORIG",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FACI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "IVNO",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ORDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DWDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CODT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DLDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "IVDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "YEA4",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ACDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUCL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUTP",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUST",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ORTP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AGNT",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PYNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RAIN",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 6
+			},
+			{
+				"name": "DMCU",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SDST",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CSCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FRE1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FRE2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WCON",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BPAT",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITGR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITTY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ITCL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SUNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FRE3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FRE4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "REPI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LTYP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MUFT",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ALUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SPUN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRMO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DISY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CMP1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CMP2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CMP3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CMP4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CMP5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CMP6",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRCH",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "UCCD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMCC",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CMNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "VANO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFIN",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ORTK",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ADID",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FECN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AGNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DPNR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "IDCD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "JOBN",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "JBSX",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SETP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "INNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "IITN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "INGR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SRES",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TECH",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ESCO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ERCO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ERCL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MECO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MECL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CTNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AGTP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CONS",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MINO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RSCD",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PROJ",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ELNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "IVQT",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "OFQS",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "IVQA",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "IVQS",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "ORQT",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "ORQS",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "ORQA",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "ORQB",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "GRWE",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "NEWE",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "VOL3",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "SAAM",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "SGAM",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "CUAM",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "DIA1",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 4
+			},
+			{
+				"name": "DIA2",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 4
+			},
+			{
+				"name": "DIA3",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 4
+			},
+			{
+				"name": "DIA4",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 4
+			},
+			{
+				"name": "DIA5",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 4
+			},
+			{
+				"name": "DIA6",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 4
+			},
+			{
+				"name": "OFRA",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "UCOS",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "DCOS",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "MFAM",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "ONK1",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "ONK2",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "ONK3",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "ONK4",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "ONK5",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "ALBO",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "DDF1",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DDF2",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DDF3",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DDF4",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DDF5",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TDEL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TORL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FULL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RQTY",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RTME",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LOWM",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MPRO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BAOL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BGOL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CAOL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CGOL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "INRC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "IITG",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "FCTN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ASST",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "HDPR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SDEP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BUAR",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "STRT",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SUFI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ROUT",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RODN",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DEMA",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "ATV1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ATV2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ATV3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ATV4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ATV5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AAV1",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "AAV2",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "AAV3",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "AAV4",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "AAV5",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "ATMO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MTCO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MTX1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MTX2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CINF",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CSHC",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AOTP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ASCL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ASCA",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RSDJ",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RFDJ",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SCOD",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRRF",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "INTY",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CUOW",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "BRAN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFE1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFE2",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "CFE3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFE4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFE5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFE6",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFE7",
+				"type": "numeric",
+				"precision": 17,
+				"scale": 2
+			},
+			{
+				"name": "CFE8",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFE9",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DLNI",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RGDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RGTM",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LMDT",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHNO",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHID",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRHL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SERN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "APBA",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CFGL",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "WATP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "GWTP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PRHW",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SERW",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "INPX",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "EXIN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DMA2",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "CAWE",
+				"type": "numeric",
+				"precision": 21,
+				"scale": 6
+			},
+			{
+				"name": "TECN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "INAP",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LMTS",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC0",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC2",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC3",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC4",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC6",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC7",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC8",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SMC9",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PIDE",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "PCLA",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "ACOS",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "BOP1",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "TEPY",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RSC1",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DECU",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "DPCL",
+				"type": "numeric",
+				"precision": 23,
+				"scale": 6
+			},
+			{
+				"name": "ENNO",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LNCL",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "APRM",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RQWH",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RAGN",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CLAT",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "MIGI",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RSC5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RSC6",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "RSC7",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ICTR",
+				"type": "smallint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL5",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL6",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL7",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL8",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "CHL9",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "accountingEntity",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "variationNumber",
+				"type": "bigint",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "timestamp",
+				"type": "timestamp without time zone",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "deleted",
+				"type": "boolean",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "archived",
+				"type": "boolean",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "public",
+			"table": "OSBSTD_ST_test"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

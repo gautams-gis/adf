@@ -1,0 +1,409 @@
+{
+	"name": "Master_MITMAS",
+	"properties": {
+		"activities": [
+			{
+				"name": "get_last_success_run",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "select max(data_end_date) as maxDate\nfrom job_monitor\nwhere job_name='@{pipeline().Pipeline}' \nand execution_status='success' \nand src_sys='compass'\n",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Job_Monitor",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set start_date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "get_last_success_run",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "start_date",
+					"value": {
+						"value": "@if(equals(variables('load_type'),'incremental'),\nformatDateTime(addDays(activity('get_last_success_run').output.firstRow.maxdate,0),'yyyy-MM-dd HH:mm:ss.fff')\n,'1900-01-01' )",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Current UTC",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set start_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "end_date",
+					"value": {
+						"value": "@{formatDateTime(adddays(utcnow(),0),'yyyy-MM-dd HH:mm:ss')}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "MITMAS_STAGING",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Truncate Staging",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "MITMAS_STAGING",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"start_date": {
+							"value": "@variables('start_date')",
+							"type": "Expression"
+						},
+						"end_date": {
+							"value": "@variables('end_date')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Staging_To_Target",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "MITMAS_STAGING",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "MITMAS",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Update_Failure_Log",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Set End Date Fail",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Log_Update",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"pipeline_name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"data_start_date": {
+							"value": "@variables('start_date')",
+							"type": "Expression"
+						},
+						"date_end_date": {
+							"value": "@variables('end_date')",
+							"type": "Expression"
+						},
+						"load_type": {
+							"value": "@variables('load_type')",
+							"type": "Expression"
+						},
+						"job_status": "fail",
+						"log_table_name": {
+							"value": "public.\"job_monitor\"",
+							"type": "Expression"
+						},
+						"source": "compass"
+					}
+				}
+			},
+			{
+				"name": "Update_Success_Log",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Set End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Log_Update",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"pipeline_name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"data_start_date": {
+							"value": "@variables('start_date')",
+							"type": "Expression"
+						},
+						"date_end_date": {
+							"value": "@variables('end_date')",
+							"type": "Expression"
+						},
+						"load_type": {
+							"value": "@variables('load_type')",
+							"type": "Expression"
+						},
+						"job_status": "success",
+						"log_table_name": {
+							"value": "public.\"job_monitor\"",
+							"type": "Expression"
+						},
+						"source": "compass"
+					}
+				}
+			},
+			{
+				"name": "Truncate Staging",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Current UTC",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "delete from public.\"MITMAS_ST\";\nselect 1 as out;",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "MITMAS_ST",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Get Data End Date",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Staging_To_Target",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "select MAX(\"timestamp\") as max_ts\nfrom public.\"MITMAS\";\n",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "MITMAS_Dataset",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set End Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Data End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "end_date",
+					"value": {
+						"value": "@formatDateTime(activity('Get Data End Date').output.firstRow.max_ts,'yyyy-MM-dd HH:mm:ss.fff')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Data End Date Fail",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Staging_To_Target",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "select MAX(\"timestamp\") as max_ts\nfrom public.\"MITMAS\";\n",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "MITMAS_Dataset",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set End Date Fail",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Data End Date Fail",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "end_date",
+					"value": {
+						"value": "@formatDateTime(activity('Get Data End Date Fail').output.firstRow.max_ts,'yyyy-MM-dd HH:mm:ss.fff')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"start_date": {
+				"type": "String"
+			},
+			"end_date": {
+				"type": "String"
+			},
+			"load_type": {
+				"type": "String",
+				"defaultValue": "full_load"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/Master"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

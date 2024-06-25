@@ -1,0 +1,1393 @@
+{
+	"name": "MITWHL_STAGING",
+	"properties": {
+		"activities": [
+			{
+				"name": "Login",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SetBearer",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Bearer",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "PerformQuery",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PerformQuery",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Query": {
+							"value": "SELECT\n  \"MITWHL\".\"accountingEntity\",\n  \"MITWHL\".\"variationNumber\",\n  \"MITWHL\".\"timestamp\",\n  \"MITWHL\".\"deleted\",\n  \"MITWHL\".\"archived\",\n  \"MITWHL\".\"CONO\",\n  \"MITWHL\".\"WHLO\",\n  \"MITWHL\".\"WHNM\",\n  \"MITWHL\".\"DIVI\",\n  \"MITWHL\".\"FACI\",\n  \"MITWHL\".\"WHTY\",\n  \"MITWHL\".\"WHSY\",\n  \"MITWHL\".\"WHPL\",\n  \"MITWHL\".\"OREF\",\n  \"MITWHL\".\"PHNO\",\n  \"MITWHL\".\"COMA\",\n  \"MITWHL\".\"CUNO\",\n  \"MITWHL\".\"SUNO\",\n  \"MITWHL\".\"SDES\",\n  \"MITWHL\".\"SHNM\",\n  \"MITWHL\".\"PLIS\",\n  \"MITWHL\".\"CSCD\",\n  \"MITWHL\".\"ECAR\",\n  \"MITWHL\".\"VRNO\",\n  \"MITWHL\".\"LNCD\",\n  \"MITWHL\".\"CPWH\",\n  \"MITWHL\".\"AUAD\",\n  \"MITWHL\".\"ALWH\",\n  \"MITWHL\".\"ALAC\",\n  \"MITWHL\".\"RESP\",\n  \"MITWHL\".\"TWSL\",\n  \"MITWHL\".\"GEOC\",\n  \"MITWHL\".\"TAXC\",\n  \"MITWHL\".\"UNST\",\n  \"MITWHL\".\"TXID\",\n  \"MITWHL\".\"DTID\",\n  \"MITWHL\".\"AASQ\",\n  \"MITWHL\".\"DMF0\",\n  \"MITWHL\".\"DMF1\",\n  \"MITWHL\".\"DMF2\",\n  \"MITWHL\".\"DMF3\",\n  \"MITWHL\".\"DMF4\",\n  \"MITWHL\".\"DMF5\",\n  \"MITWHL\".\"DMF6\",\n  \"MITWHL\".\"DMF7\",\n  \"MITWHL\".\"DMF8\",\n  \"MITWHL\".\"DMF9\",\n  \"MITWHL\".\"INUL\",\n  \"MITWHL\".\"EPUL\",\n  \"MITWHL\".\"EXDL\",\n  \"MITWHL\".\"PIDL\",\n  \"MITWHL\".\"ALWQ\",\n  \"MITWHL\".\"ITDL\",\n  \"MITWHL\".\"CDYN\",\n  \"MITWHL\".\"PATF\",\n  \"MITWHL\".\"PAHF\",\n  \"MITWHL\".\"PMTF\",\n  \"MITWHL\".\"PMHF\",\n  \"MITWHL\".\"DDLO\",\n  \"MITWHL\".\"CDPD\",\n  \"MITWHL\".\"CDPM\",\n  \"MITWHL\".\"CALV\",\n  \"MITWHL\".\"ACGR\",\n  \"MITWHL\".\"NBID\",\n  \"MITWHL\".\"STOF\",\n  \"MITWHL\".\"ASOT\",\n  \"MITWHL\".\"DAAS\",\n  \"MITWHL\".\"LEAM\",\n  \"MITWHL\".\"DMFC\",\n  \"MITWHL\".\"LSPM\",\n  \"MITWHL\".\"RSTN\",\n  \"MITWHL\".\"RGDT\",\n  \"MITWHL\".\"RGTM\",\n  \"MITWHL\".\"LMDT\",\n  \"MITWHL\".\"CHNO\",\n  \"MITWHL\".\"CHID\",\n  (CAST(\"LMTS\" AS timestamp)) AS \"LMTS\",\n  \"MITWHL\".\"CPTE\",\n  \"MITWHL\".\"SCED\",\n  \"MITWHL\".\"GEOX\",\n  \"MITWHL\".\"GEOY\",\n  \"MITWHL\".\"GEOZ\",\n  \"MITWHL\".\"PRIO\",\n  \"MITWHL\".\"PWGR\",\n  \"MITWHL\".\"RDIL\",\n  \"MITWHL\".\"TCUW\",\n  \"MITWHL\".\"WOPC\",\n  \"MITWHL\".\"BLPM\",\n  \"MITWHL\".\"PORG\",\n  \"MITWHL\".\"RFT2\"\nFROM\n  \"MITWHL\"\nWHERE\n  (\"timestamp\" >= '@{pipeline().parameters.start_date}')\n  and\n  (\"timestamp\" <= '@{pipeline().parameters.end_date}')",
+							"type": "Expression"
+						},
+						"BaseURL": {
+							"value": "https://mingle-ionapi.inforcloudsuite.com/EMCO_TST/DATAFABRIC/compass/v2/",
+							"type": "Expression"
+						},
+						"BearerToken": {
+							"value": "@variables('Bearer')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "UntilRecordCountReached",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetCurrentRow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetLimit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PerformQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(int(variables('CurrentRow')), activity('PerformQuery').output.pipelineReturnValue.RowCount)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy MITWHL Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"maxConcurrentConnections": 1,
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "Authorization: @{variables('Bearer')}\nAccept: text/csv",
+											"type": "Expression"
+										},
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzurePostgreSQLSink",
+									"writeBatchSize": 1000000,
+									"writeBatchTimeout": "00:30:00",
+									"writeMethod": "CopyCommand"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "CONO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CONO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "WHLO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WHLO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "WHNM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WHNM",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DIVI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIVI",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "FACI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "FACI",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "WHTY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WHTY",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "WHSY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WHSY",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "WHPL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WHPL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "OREF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OREF",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PHNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PHNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "COMA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "COMA",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CUNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "SUNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SUNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "SDES",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SDES",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "SHNM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SHNM",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PLIS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PLIS",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CSCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CSCD",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ECAR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ECAR",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "VRNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "VRNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "LNCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LNCD",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CPWH",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CPWH",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "AUAD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AUAD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ALWH",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ALWH",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ALAC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ALAC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "RESP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RESP",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TWSL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TWSL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "GEOC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "GEOC",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "TAXC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TAXC",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UNST",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UNST",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TXID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TXID",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "DTID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DTID",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "AASQ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AASQ",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF0",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF0",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF1",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF2",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF3",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF4",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF5",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF6",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF7",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF7",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF8",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF8",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMF9",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMF9",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "INUL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "INUL",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "EPUL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "EPUL",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "EXDL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "EXDL",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PIDL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PIDL",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ALWQ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ALWQ",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ITDL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ITDL",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CDYN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CDYN",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PATF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PATF",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PAHF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PAHF",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PMTF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PMTF",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PMHF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PMHF",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DDLO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DDLO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CDPD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CDPD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CDPM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CDPM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CALV",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CALV",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ACGR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ACGR",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "NBID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "NBID",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "STOF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "STOF",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ASOT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ASOT",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DAAS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DAAS",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "LEAM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LEAM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DMFC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMFC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "LSPM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LSPM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "RSTN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RSTN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RGDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RGDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "RGTM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RGTM",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "LMDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LMDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CHNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CHNO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CHID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CHID",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "LMTS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LMTS",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "CPTE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CPTE",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "SCED",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SCED",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "GEOX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "GEOX",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "GEOY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "GEOY",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "GEOZ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "GEOZ",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "PRIO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRIO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PWGR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PWGR",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "RDIL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RDIL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TCUW",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TCUW",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "WOPC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WOPC",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "BLPM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BLPM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PORG",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PORG",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RFT2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RFT2",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "accountingEntity",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "accountingEntity",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "variationNumber",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "variationNumber",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "timestamp",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "timestamp",
+												"type": "DateTime",
+												"physicalType": "timestamp without time zone"
+											}
+										},
+										{
+											"source": {
+												"name": "deleted",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "deleted",
+												"type": "Boolean",
+												"physicalType": "boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "archived",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "archived",
+												"type": "Boolean",
+												"physicalType": "boolean"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Compass_MITWHL_DataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"QueryId": {
+											"value": "@activity('PerformQuery').output.pipelineReturnValue.QueryId",
+											"type": "Expression"
+										},
+										"Limit": {
+											"value": "@int(variables('Limit'))",
+											"type": "Expression"
+										},
+										"Offset": {
+											"value": "@int(variables('CurrentRow'))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "MITWHL_ST",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "WriteCurrentRowVariable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "PerformMathOnCurrentRow",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentRow",
+								"value": {
+									"value": "@variables('TempCurrentRow')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "PerformMathOnCurrentRow",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy MITWHL Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCurrentRow",
+								"value": {
+									"value": "@string(add(int(variables('CurrentRow')), int(variables('Limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FailUntilLoop",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Copy MITWHL Data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "UnableToCopyData",
+								"errorCode": "2"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "SetCurrentRow",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentRow",
+					"value": "0"
+				}
+			},
+			{
+				"name": "SetLimit",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Limit",
+					"value": "50000"
+				}
+			}
+		],
+		"parameters": {
+			"start_date": {
+				"type": "string"
+			},
+			"end_date": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"Bearer": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/Staging Pipeline"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

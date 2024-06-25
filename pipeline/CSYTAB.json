@@ -1,0 +1,566 @@
+{
+	"name": "CSYTAB",
+	"properties": {
+		"activities": [
+			{
+				"name": "Login",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SetBearer",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Bearer",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "PerformQuery",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PerformQuery",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Query": {
+							"value": "SELECT\n  \"CSYTAB\".\"accountingEntity\",\n  \"CSYTAB\".\"variationNumber\",\n  \"CSYTAB\".\"timestamp\",\n  \"CSYTAB\".\"archived\",\n  \"CSYTAB\".\"deleted\",\n  \"CSYTAB\".\"CONO\",\n  \"CSYTAB\".\"DIVI\",\n  \"CSYTAB\".\"STCO\",\n  \"CSYTAB\".\"STKY\",\n  \"CSYTAB\".\"LNCD\",\n  REPLACE (\"TX40\", ',', '_')AS \"TX40\",\n  REPLACE (\"TX15\", ',', '_')AS \"TX15\",\n  \"CSYTAB\".\"PARM\",\n  \"CSYTAB\".\"TXID\",\n  \"CSYTAB\".\"RGDT\",\n  \"CSYTAB\".\"RGTM\",\n  \"CSYTAB\".\"LMDT\",\n  \"CSYTAB\".\"CHNO\",\n  \"CSYTAB\".\"CHID\",\n  CAST(DATEDIFF(millisecond,'1970-01-01 00:00:00',LMTS) AS BIGINT) AS \"LMTS\",\n  \"CSYTAB\".\"DTID\",\n  \"CSYTAB\".\"MGSQ\"\nFROM\n  \"CSYTAB\"",
+							"type": "Expression"
+						},
+						"BaseURL": "https://mingle-ionapi.inforcloudsuite.com/EMCO_TST/DATAFABRIC/compass/v2/",
+						"BearerToken": {
+							"value": "@variables('Bearer')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "UntilRecordCountReached",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetCurrentRow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetLimit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PerformQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(int(variables('CurrentRow')), activity('PerformQuery').output.pipelineReturnValue.RowCount)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy CSYTAB Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"maxConcurrentConnections": 1,
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "Authorization: @{variables('Bearer')}\nAccept: text/csv",
+											"type": "Expression"
+										},
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzurePostgreSQLSink",
+									"writeBatchSize": 1000000,
+									"writeBatchTimeout": "00:30:00",
+									"writeMethod": "CopyCommand"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "CONO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CONO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIVI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIVI",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "STCO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "STCO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "STKY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "STKY",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "LNCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LNCD",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TX40",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TX40",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TX15",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TX15",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PARM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PARM",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TXID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TXID",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "RGDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RGDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "RGTM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RGTM",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "LMDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LMDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CHNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CHNO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CHID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CHID",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "LMTS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LMTS",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "DTID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DTID",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "MGSQ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MGSQ",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "accountingEntity",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "accountingEntity",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "variationNumber",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "variationNumber",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "timestamp",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "timestamp",
+												"type": "DateTime",
+												"physicalType": "timestamp without time zone"
+											}
+										},
+										{
+											"source": {
+												"name": "deleted",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "deleted",
+												"type": "Boolean",
+												"physicalType": "boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "archived",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "archived",
+												"type": "Boolean",
+												"physicalType": "boolean"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Compass_CSYTAB_DataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"QueryId": {
+											"value": "@activity('PerformQuery').output.pipelineReturnValue.QueryId",
+											"type": "Expression"
+										},
+										"Limit": {
+											"value": "@int(variables('Limit'))",
+											"type": "Expression"
+										},
+										"Offset": {
+											"value": "@int(variables('CurrentRow'))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "CSYTAB_Dataset",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "WriteCurrentRowVariable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "PerformMathOnCurrentRow",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentRow",
+								"value": {
+									"value": "@variables('TempCurrentRow')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "PerformMathOnCurrentRow",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy CSYTAB Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCurrentRow",
+								"value": {
+									"value": "@string(add(int(variables('CurrentRow')), int(variables('Limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FailUntilLoop",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Copy CSYTAB Data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "UnableToCopyData",
+								"errorCode": "2"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "SetCurrentRow",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentRow",
+					"value": "0"
+				}
+			},
+			{
+				"name": "SetLimit",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Limit",
+					"value": "50000"
+				}
+			}
+		],
+		"variables": {
+			"Bearer": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/POC Tables - Full Refresh"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

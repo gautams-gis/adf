@@ -1,0 +1,61 @@
+{
+	"name": "Log_Update",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzurePostgreSqlSource",
+						"query": {
+							"value": "insert into @{pipeline().parameters.log_table_name}(src_sys,job_name,load_type,job_execution_date,data_start_date,data_end_date,execution_status,comments)\nvalues(\n    '@{pipeline().parameters.source}',\n    '@{pipeline().parameters.pipeline_name}',\n    '@{pipeline().parameters.load_type}',\n    '@{formatDateTime(utcnow(),'yyyy-MM-dd HH:mm:ss')}',\n    '@{pipeline().parameters.data_start_date}',\n    '@{pipeline().parameters.date_end_date}',\n    '@{pipeline().parameters.job_status}',\n    NULL\n    );\nselect 1 as out;",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Job_Monitor",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
+		"parameters": {
+			"pipeline_name": {
+				"type": "string"
+			},
+			"data_start_date": {
+				"type": "string"
+			},
+			"date_end_date": {
+				"type": "string"
+			},
+			"load_type": {
+				"type": "string"
+			},
+			"job_status": {
+				"type": "string"
+			},
+			"log_table_name": {
+				"type": "string"
+			},
+			"source": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

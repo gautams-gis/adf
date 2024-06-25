@@ -1,0 +1,75 @@
+{
+	"name": "CSYTAB",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "CSYTAB_ST",
+						"type": "DatasetReference"
+					},
+					"name": "ReadStaging",
+					"description": "Import data from CSYTAB_ST"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "CSYTAB_Dataset",
+						"type": "DatasetReference"
+					},
+					"name": "WriteToTarget",
+					"description": "Export data to CSYTAB_Dataset"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ValidateCondition",
+					"description": "CONO, DIVI, STCO, STKY, LNCD - PK"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CONO as short,",
+				"          DIVI as string,",
+				"          STCO as string,",
+				"          STKY as string,",
+				"          LNCD as string,",
+				"          TX40 as string,",
+				"          TX15 as string,",
+				"          PARM as string,",
+				"          TXID as long,",
+				"          RGDT as integer,",
+				"          RGTM as integer,",
+				"          LMDT as integer,",
+				"          CHNO as short,",
+				"          CHID as string,",
+				"          LMTS as long,",
+				"          DTID as long,",
+				"          MGSQ as short,",
+				"          accountingEntity as string,",
+				"          variationNumber as long,",
+				"          timestamp as timestamp,",
+				"          deleted as boolean,",
+				"          archived as boolean",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: true,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ReadStaging",
+				"ReadStaging alterRow(upsertIf(true())) ~> ValidateCondition",
+				"ValidateCondition sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:false,",
+				"     upsertable:true,",
+				"     keys:['CONO','DIVI','STCO','STKY','LNCD'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> WriteToTarget"
+			]
+		}
+	}
+}

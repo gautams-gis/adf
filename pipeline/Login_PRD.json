@@ -1,0 +1,96 @@
+{
+	"name": "Login_PRD",
+	"properties": {
+		"description": "Login to Infor Cloud and get Bearer Token back",
+		"activities": [
+			{
+				"name": "GetToken",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					"url": "https://mingle-sso.inforcloudsuite.com:443/EMCO_PRD/as/token.oauth2 ",
+					"body": "grant_type=password&username=EMCO_PRD#CKET6zyRWOxcABzly_T-5uqg_WVPWnTz4R8igPEA9Li_M-pYIgv-GY_e-Ljr2YrBLBP-E37iYmYq33YWQUGu5w&password=5CTWnOX9SN3I23IRtIvtw_zGuU2nFMub5GWS7P9OIryZtseI7CuDOV4e7I3QCjLLS89HnoFSYZw49-CQyyApMA",
+					"authentication": {
+						"type": "Basic",
+						"username": "EMCO_PRD~NAj09C1sGqdpUiiNEfj6uIzJRehiDCSIVmUDOdcjF7g",
+						"password": {
+							"type": "SecureString",
+							"value": "**********"
+						}
+					}
+				}
+			},
+			{
+				"name": "SetBearerToken",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetToken",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineReturnValue",
+					"value": [
+						{
+							"key": "access_token",
+							"value": {
+								"type": "Expression",
+								"content": "@activity('GetToken').output.access_token"
+							}
+						}
+					],
+					"setSystemVariable": true
+				}
+			}
+		],
+		"variables": {
+			"QueryID": {
+				"type": "String"
+			},
+			"Status": {
+				"type": "String"
+			},
+			"BearerToken": {
+				"type": "String"
+			},
+			"BaseURL": {
+				"type": "String"
+			},
+			"StatusURL": {
+				"type": "String"
+			},
+			"RowCount": {
+				"type": "String"
+			},
+			"Bearer": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "PRD/Template Pipeline PRD"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:15Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

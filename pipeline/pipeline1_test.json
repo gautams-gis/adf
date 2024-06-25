@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "pipeline1_test",
 	"properties": {
 		"activities": [
 			{
@@ -8,15 +8,12 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"waitTimeInSeconds": 1
+					"waitTimeInSeconds": 5
 				}
 			}
 		],
-		"folder": {
-			"name": "test"
-		},
 		"annotations": [],
-		"lastPublishTime": "2024-06-19T11:07:18Z"
+		"lastPublishTime": "2024-06-18T10:29:15Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

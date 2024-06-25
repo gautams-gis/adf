@@ -1,0 +1,19 @@
+{
+	"name": "AzureDedicatedIR",
+	"properties": {
+		"type": "Managed",
+		"description": "Azure Dedicated IR for Cannada Central",
+		"typeProperties": {
+			"computeProperties": {
+				"location": "Canada East",
+				"dataFlowProperties": {
+					"computeType": "MemoryOptimized",
+					"coreCount": 32,
+					"timeToLive": 10,
+					"cleanup": false,
+					"customProperties": []
+				}
+			}
+		}
+	}
+}

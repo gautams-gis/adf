@@ -1,0 +1,117 @@
+{
+	"name": "token_template",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set False",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ContinueLoop",
+					"value": {
+						"value": "@bool(0)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Renewal Token",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set False",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@variables('ContinueLoop')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "If Condition1",
+							"type": "IfCondition",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(variables('ContinueLoop'), bool(1))",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Inner wait",
+										"type": "Wait",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"waitTimeInSeconds": 15
+										}
+									}
+								]
+							}
+						}
+					],
+					"timeout": "2.02:00:00"
+				}
+			},
+			{
+				"name": "Stop renewal",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "2 min",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ContinueLoop",
+					"value": {
+						"value": "@bool(1)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "2 min",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Set False",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 120
+				}
+			}
+		],
+		"variables": {
+			"ContinueLoop": {
+				"type": "Boolean"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:15Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

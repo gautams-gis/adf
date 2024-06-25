@@ -1,0 +1,42 @@
+{
+	"name": "Compass_MITMAS_DataSet_PRD",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "EMCO_PRD",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"QueryId": {
+				"type": "string"
+			},
+			"Limit": {
+				"type": "int",
+				"defaultValue": 50000
+			},
+			"Offset": {
+				"type": "int",
+				"defaultValue": 0
+			}
+		},
+		"folder": {
+			"name": "PRD/Compass - Source - PRD"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "@concat(dataset().QueryId, '/result?queryExecutor=datalake&limit=', string(dataset().Limit),'&offset=', string(dataset().Offset))",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\"",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

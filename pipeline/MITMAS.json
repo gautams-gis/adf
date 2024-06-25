@@ -1,0 +1,294 @@
+{
+	"name": "MITMAS",
+	"properties": {
+		"activities": [
+			{
+				"name": "Login",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SetBearer",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Bearer",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "PerformQuery",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PerformQuery",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Query": {
+							"value": "SELECT \"MITMAS\".\"accountingEntity\",\n  \"MITMAS\".\"variationNumber\",\n  \"MITMAS\".\"timestamp\",\n  \"MITMAS\".\"deleted\",\n  \"MITMAS\".\"archived\",\n  \"MITMAS\".\"CONO\",\n  \"MITMAS\".\"STAT\",\n  \"MITMAS\".\"ITNO\",\n  \"MITMAS\".\"FUDS\",\n  \"MITMAS\".\"DWNO\",\n  \"MITMAS\".\"RESP\",\n  \"MITMAS\".\"DCCD\",\n  \"MITMAS\".\"UNMS\",\n  \"MITMAS\".\"ITGR\",\n  \"MITMAS\".\"ITCL\",\n  \"MITMAS\".\"BUAR\",\n  \"MITMAS\".\"EVGR\",\n  \"MITMAS\".\"ITTY\",\n  \"MITMAS\".\"TPCD\",\n  \"MITMAS\".\"MABU\",\n  \"MITMAS\".\"CHCD\",\n  \"MITMAS\".\"STCD\",\n  \"MITMAS\".\"BACD\",\n  \"MITMAS\".\"VOL3\",\n  \"MITMAS\".\"NEWE\",\n  \"MITMAS\".\"GRWE\",\n  \"MITMAS\".\"PPUN\",\n  \"MITMAS\".\"BYPR\",\n  \"MITMAS\".\"WAPC\",\n  \"MITMAS\".\"QACD\",\n  \"MITMAS\".\"EPCD\",\n  \"MITMAS\".\"POCY\",\n  \"MITMAS\".\"ACTI\",\n  \"MITMAS\".\"HIE1\",\n  \"MITMAS\".\"HIE2\",\n  \"MITMAS\".\"HIE3\",\n  \"MITMAS\".\"HIE4\",\n  \"MITMAS\".\"HIE5\",\n  \"MITMAS\".\"GRP1\",\n  \"MITMAS\".\"GRP2\",\n  \"MITMAS\".\"GRP3\",\n  \"MITMAS\".\"GRP4\",\n  \"MITMAS\".\"GRP5\",\n  \"MITMAS\".\"CFI1\",\n  \"MITMAS\".\"CFI2\",\n  \"MITMAS\".\"CFI3\",\n  \"MITMAS\".\"CFI4\",\n  \"MITMAS\".\"CFI5\",\n  \"MITMAS\".\"ECCC\",\n  \"MITMAS\".\"TXID\",\n  \"MITMAS\".\"DTID\",\n  \"MITMAS\".\"ECVE\",\n  \"MITMAS\".\"ECAC\",\n  \"MITMAS\".\"ECMA\",\n  \"MITMAS\".\"ECFL\",\n  \"MITMAS\".\"WSCA\",\n  \"MITMAS\".\"PRGP\",\n  \"MITMAS\".\"ETRF\",\n  \"MITMAS\".\"ACRF\",\n  \"MITMAS\".\"INDI\",\n  \"MITMAS\".\"PUUN\",\n  \"MITMAS\".\"AUTC\",\n  \"MITMAS\".\"ALUC\",\n  \"MITMAS\".\"PDCC\",\n  \"MITMAS\".\"IEAA\",\n  \"MITMAS\".\"RIDE\",\n  \"MITMAS\".\"RIDC\",\n  \"MITMAS\".\"GRTI\",\n  \"MITMAS\".\"GRTS\",\n  \"MITMAS\".\"EXPD\",\n  \"MITMAS\".\"ITRF\",\n  \"MITMAS\".\"PRCM\",\n  \"MITMAS\".\"GRMT\",\n  \"MITMAS\".\"HAZI\",\n  \"MITMAS\".\"SALE\",\n  \"MITMAS\".\"FRAG\",\n  \"MITMAS\".\"TAXC\",\n  \"MITMAS\".\"ATMO\",\n  \"MITMAS\".\"ATMN\",\n  \"MITMAS\".\"TPLI\",\n  \"MITMAS\".\"FCU1\",\n  \"MITMAS\".\"SUNO\",\n  \"MITMAS\".\"PUPR\",\n  \"MITMAS\".\"PUCD\",\n  \"MITMAS\".\"CUCD\",\n  \"MITMAS\".\"PPDT\",\n  \"MITMAS\".\"SAPR\",\n  \"MITMAS\".\"STUN\",\n  \"MITMAS\".\"SACD\",\n  \"MITMAS\".\"CUCS\",\n  \"MITMAS\".\"SPDT\",\n  \"MITMAS\".\"DIGI\",\n  \"MITMAS\".\"BGRP\",\n  \"MITMAS\".\"PRVG\",\n  \"MITMAS\".\"FRE3\",\n  \"MITMAS\".\"FRE4\",\n  \"MITMAS\".\"OTDI\",\n  \"MITMAS\".\"BOGR\",\n  \"MITMAS\".\"PRGR\",\n  \"MITMAS\".\"LAMA\",\n  \"MITMAS\".\"ACHK\",\n  \"MITMAS\".\"BPEY\",\n  \"MITMAS\".\"SPUN\",\n  \"MITMAS\".\"SPUC\",\n  \"MITMAS\".\"ALUN\",\n  \"MITMAS\".\"UNNN\",\n  \"MITMAS\".\"UNPA\",\n  \"MITMAS\".\"HAC1\",\n  \"MITMAS\".\"HAC2\",\n  \"MITMAS\".\"HAC3\",\n  \"MITMAS\".\"DIM1\",\n  \"MITMAS\".\"DIM2\",\n  \"MITMAS\".\"DIM3\",\n  \"MITMAS\".\"SPE1\",\n  \"MITMAS\".\"SPE2\",\n  \"MITMAS\".\"SPE3\",\n  \"MITMAS\".\"SPE4\",\n  \"MITMAS\".\"SPE5\",\n  \"MITMAS\".\"CETY\",\n  \"MITMAS\".\"STCN\",\n  \"MITMAS\".\"SPAC\",\n  \"MITMAS\".\"TRPA\",\n  \"MITMAS\".\"PROD\",\n  \"MITMAS\".\"SMFI\",\n  \"MITMAS\".\"TANK\",\n  \"MITMAS\".\"ARPA\",\n  \"MITMAS\".\"ARPR\",\n  \"MITMAS\".\"AMPT\",\n  \"MITMAS\".\"AWDY\",\n  \"MITMAS\".\"NPTO\",\n  \"MITMAS\".\"MES1\",\n  \"MITMAS\".\"MES2\",\n  \"MITMAS\".\"MES3\",\n  \"MITMAS\".\"MES4\",\n  \"MITMAS\".\"MVA1\",\n  \"MITMAS\".\"MVA2\",\n  \"MITMAS\".\"MVA3\",\n  \"MITMAS\".\"MVA4\",\n  \"MITMAS\".\"PEQ1\",\n  \"MITMAS\".\"PEQ2\",\n  \"MITMAS\".\"PEQ3\",\n  \"MITMAS\".\"PEQ4\",\n  \"MITMAS\".\"PET1\",\n  \"MITMAS\".\"PET2\",\n  \"MITMAS\".\"PET3\",\n  \"MITMAS\".\"PET4\",\n  \"MITMAS\".\"MPGM\",\n  \"MITMAS\".\"ORTY\",\n  \"MITMAS\".\"PLCD\",\n  \"MITMAS\".\"MAPL\",\n  \"MITMAS\".\"TOHI\",\n  \"MITMAS\".\"TORE\",\n  \"MITMAS\".\"FEBA\",\n  \"MITMAS\".\"MAPN\",\n  \"MITMAS\".\"DOID\",\n  \"MITMAS\".\"SEPR\",\n  \"MITMAS\".\"STCS\",\n  \"MITMAS\".\"NESA\",\n  \"MITMAS\".\"NSUF\",\n  \"MITMAS\".\"FCCM\",\n  \"MITMAS\".\"DPID\",\n  \"MITMAS\".\"CONC\",\n  \"MITMAS\".\"PLMZ\",\n  \"MITMAS\".\"CCO1\",\n  \"MITMAS\".\"CCO2\",\n  \"MITMAS\".\"CCO3\",\n  \"MITMAS\".\"WADY\",\n  \"MITMAS\".\"TBSR\",\n  \"MITMAS\".\"MBSR\",\n  \"MITMAS\".\"TBUR\",\n  \"MITMAS\".\"MBUR\",\n  \"MITMAS\".\"TBFR\",\n  \"MITMAS\".\"MBFR\",\n  \"MITMAS\".\"AESC\",\n  \"MITMAS\".\"AES2\",\n  \"MITMAS\".\"AMOR\",\n  \"MITMAS\".\"FUNC\",\n  \"MITMAS\".\"STNC\",\n  \"MITMAS\".\"DIRR\",\n  \"MITMAS\".\"MDIR\",\n  \"MITMAS\".\"SCGR\",\n  \"MITMAS\".\"ARR1\",\n  \"MITMAS\".\"AEQY\",\n  \"MITMAS\".\"LEAI\",\n  \"MITMAS\".\"WAL1\",\n  \"MITMAS\".\"WAL2\",\n  \"MITMAS\".\"WAL3\",\n  \"MITMAS\".\"WAL4\",\n  \"MITMAS\".\"IACP\",\n  \"MITMAS\".\"HDPR\",\n  \"MITMAS\".\"AAD0\",\n  \"MITMAS\".\"AAD1\",\n  \"MITMAS\".\"CHCL\",\n  \"MITMAS\".\"ITRC\",\n  \"MITMAS\".\"VTCP\",\n  \"MITMAS\".\"VTCS\",\n  \"MITMAS\".\"RGDT\",\n  \"MITMAS\".\"RGTM\",\n  \"MITMAS\".\"LMDT\",\n  \"MITMAS\".\"CHNO\",\n  \"MITMAS\".\"CHID\",\n CAST(DATEDIFF(millisecond,'1970-01-01 00:00:00',LMTS) AS BIGINT) AS \"LMTS\",\n  \"MITMAS\".\"ATNR\",\n  \"MITMAS\".\"NMIT\",\n  \"MITMAS\".\"TECR\",\n  \"MITMAS\".\"EXCA\",\n  \"MITMAS\".\"CAWP\",\n  \"MITMAS\".\"CWUN\",\n  \"MITMAS\".\"CPUN\",\n  \"MITMAS\".\"ILEN\",\n  \"MITMAS\".\"IWID\",\n  \"MITMAS\".\"IHEI\",\n  \"MITMAS\".\"RNRI\",\n  \"MITMAS\".\"SAFC\",\n  \"MITMAS\".\"RMSG\",\n  \"MITMAS\".\"MOTP\",\n  \"MITMAS\".\"ACMC\",\n  \"MITMAS\".\"ACCG\",\n  \"MITMAS\".\"CCI1\",\n  \"MITMAS\".\"CCCM\",\n  \"MITMAS\".\"CRI1\",\n  \"MITMAS\".\"ITRU\",\n  \"MITMAS\".\"HVMT\",\n  \"MITMAS\".\"ITNE\",\n  \"MITMAS\".\"QMGP\",\n  \"MITMAS\".\"SPGV\",\n  \"MITMAS\".\"RUID\",\n  \"MITMAS\".\"SPIH\",\n  \"MITMAS\".\"QIRQ\",\n  \"MITMAS\".\"PDLN\",\n  \"MITMAS\".\"CPGR\",\n  \"MITMAS\".\"SUME\",\n  \"MITMAS\".\"SUMP\",\n  \"MITMAS\".\"SRGR\",\n  REPLACE (\"ITDS\", ',', '_')AS \"ITDS\"\nFROM\n  \"MITMAS\"",
+							"type": "Expression"
+						},
+						"BaseURL": "https://mingle-ionapi.inforcloudsuite.com/EMCO_TST/DATAFABRIC/compass/v2/",
+						"BearerToken": {
+							"value": "@variables('Bearer')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "UntilRecordCountReached",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetCurrentRow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetLimit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PerformQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(int(variables('CurrentRow')), activity('PerformQuery').output.pipelineReturnValue.RowCount)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy MITMAS Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"maxConcurrentConnections": 1,
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "Authorization: @{variables('Bearer')}\nAccept: text/csv",
+											"type": "Expression"
+										},
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzurePostgreSQLSink",
+									"writeBatchSize": 1000000,
+									"writeBatchTimeout": "00:30:00",
+									"writeMethod": "CopyCommand"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Compass_MITMAS_Dataset",
+									"type": "DatasetReference",
+									"parameters": {
+										"QueryId": {
+											"value": "@activity('PerformQuery').output.pipelineReturnValue.QueryId",
+											"type": "Expression"
+										},
+										"Limit": "@int(variables('Limit'))",
+										"Offset": "@int(variables('CurrentRow'))"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "MITMAS_Dataset",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "WriteCurrentRowVariable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "PerformMathOnCurrentRow",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentRow",
+								"value": {
+									"value": "@variables('TempCurrentRow')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "PerformMathOnCurrentRow",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy MITMAS Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCurrentRow",
+								"value": {
+									"value": "@string(add(int(variables('CurrentRow')), int(variables('Limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FailUntilLoop",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Copy MITMAS Data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "UnableToCopyData",
+								"errorCode": "2"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "SetCurrentRow",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentRow",
+					"value": "0"
+				}
+			},
+			{
+				"name": "SetLimit",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Limit",
+					"value": "50000"
+				}
+			}
+		],
+		"variables": {
+			"Bearer": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/POC Tables - Full Refresh"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,20 @@
+{
+	"name": "CSYTAB_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Postgres/PostgreSQL - Targets"
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "public",
+			"table": "CSYTAB"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

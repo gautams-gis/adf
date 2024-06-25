@@ -1,0 +1,96 @@
+{
+	"name": "Login",
+	"properties": {
+		"description": "Login to Infor Cloud and get Bearer Token back",
+		"activities": [
+			{
+				"name": "GetToken",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/x-www-form-urlencoded"
+					},
+					"url": "https://mingle-sso.inforcloudsuite.com:443/EMCO_TST/as/token.oauth2",
+					"body": "grant_type=password&username=EMCO_TST#QGTp1_Svii7Iw5q_bFIB2q_J5DAME-CUdj-Tt6EVzahwp4yjhXtIx9QDCyF5Nt2w5QiaiuGzDlzlL6RRT_Gv3Q&password=DcFXnE0JUHY2QgLZGovQEHGF1quPPLvAlYpKO9JroGPw15lCD1BD5P0omNaHX6uDfkKsHQQBmzP4LWYYuUkBnA",
+					"authentication": {
+						"type": "Basic",
+						"username": "EMCO_TST~97XeFBbbwal0HDhZq6gd8fuhv6VewQJHyjaeCxUwiRI",
+						"password": {
+							"type": "SecureString",
+							"value": "**********"
+						}
+					}
+				}
+			},
+			{
+				"name": "SetBearerToken",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetToken",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineReturnValue",
+					"value": [
+						{
+							"key": "access_token",
+							"value": {
+								"type": "Expression",
+								"content": "@activity('GetToken').output.access_token"
+							}
+						}
+					],
+					"setSystemVariable": true
+				}
+			}
+		],
+		"variables": {
+			"QueryID": {
+				"type": "String"
+			},
+			"Status": {
+				"type": "String"
+			},
+			"BearerToken": {
+				"type": "String"
+			},
+			"BaseURL": {
+				"type": "String"
+			},
+			"StatusURL": {
+				"type": "String"
+			},
+			"RowCount": {
+				"type": "String"
+			},
+			"Bearer": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "TST/Template Pipelines"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:15Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

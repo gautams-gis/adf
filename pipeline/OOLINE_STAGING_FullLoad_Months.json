@@ -1,0 +1,3829 @@
+{
+	"name": "OOLINE_STAGING_FullLoad_Months",
+	"properties": {
+		"activities": [
+			{
+				"name": "Login",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SetBearer",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Bearer",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "PerformQuery",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PerformQuery",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Query": {
+							"value": "SELECT\n    \"OOLINE\".\"CONO\",\n    \"OOLINE\".\"ORNO\",\n    \"OOLINE\".\"PONR\",\n    \"OOLINE\".\"POSX\",\n    \"OOLINE\".\"DIVI\",\n    \"OOLINE\".\"LTYP\",\n    \"OOLINE\".\"ORST\",\n    \"OOLINE\".\"FACI\",\n    \"OOLINE\".\"WHLO\",\n    \"OOLINE\".\"ITNO\",\n    \"OOLINE\".\"REPI\",\n    \"OOLINE\".\"ITDS\",\n    \"OOLINE\".\"TEDS\",\n    \"OOLINE\".\"ORQT\",\n    \"OOLINE\".\"ORQA\",\n    \"OOLINE\".\"RNQT\",\n    \"OOLINE\".\"RNQA\",\n    \"OOLINE\".\"ALQT\",\n    \"OOLINE\".\"ALQA\",\n    \"OOLINE\".\"PLQT\",\n    \"OOLINE\".\"PLQA\",\n    \"OOLINE\".\"DLQT\",\n    \"OOLINE\".\"DLQA\",\n    \"OOLINE\".\"IVQT\",\n    \"OOLINE\".\"IVQA\",\n    \"OOLINE\".\"DCCD\",\n    \"OOLINE\".\"ALUN\",\n    \"OOLINE\".\"DCCA\",\n    \"OOLINE\".\"COFA\",\n    \"OOLINE\".\"DMCF\",\n    \"OOLINE\".\"SPUN\",\n    \"OOLINE\".\"PCOF\",\n    \"OOLINE\".\"DCCS\",\n    \"OOLINE\".\"COFS\",\n    \"OOLINE\".\"DMCS\",\n    \"OOLINE\".\"POPN\",\n    \"OOLINE\".\"ALWT\",\n    \"OOLINE\".\"ALWQ\",\n    \"OOLINE\".\"SAPR\",\n    \"OOLINE\".\"NEPR\",\n    \"OOLINE\".\"SACD\",\n    \"OOLINE\".\"PRMO\",\n    \"OOLINE\".\"DIC1\",\n    \"OOLINE\".\"DIC2\",\n    \"OOLINE\".\"DIC3\",\n    \"OOLINE\".\"DIC4\",\n    \"OOLINE\".\"DIC5\",\n    \"OOLINE\".\"DIC6\",\n    \"OOLINE\".\"DIP1\",\n    \"OOLINE\".\"DIP2\",\n    \"OOLINE\".\"DIP3\",\n    \"OOLINE\".\"DIP4\",\n    \"OOLINE\".\"DIP5\",\n    \"OOLINE\".\"DIP6\",\n    \"OOLINE\".\"DIA1\",\n    \"OOLINE\".\"DIA2\",\n    \"OOLINE\".\"DIA3\",\n    \"OOLINE\".\"DIA4\",\n    \"OOLINE\".\"DIA5\",\n    \"OOLINE\".\"DIA6\",\n    \"OOLINE\".\"CMP1\",\n    \"OOLINE\".\"CMP2\",\n    \"OOLINE\".\"CMP3\",\n    \"OOLINE\".\"CMP4\",\n    \"OOLINE\".\"CMP5\",\n    \"OOLINE\".\"CMP6\",\n    \"OOLINE\".\"DIBE\",\n    \"OOLINE\".\"DIRE\",\n    \"OOLINE\".\"DCHA\",\n    \"OOLINE\".\"DPST\",\n    \"OOLINE\".\"DDSU\",\n    \"OOLINE\".\"IDSC\",\n    \"OOLINE\".\"ACRF\",\n    \"OOLINE\".\"OTDI\",\n    \"OOLINE\".\"DWDT\",\n    \"OOLINE\".\"DWHM\",\n    \"OOLINE\".\"CODT\",\n    \"OOLINE\".\"COHM\",\n    \"OOLINE\".\"DWDZ\",\n    \"OOLINE\".\"DWHZ\",\n    \"OOLINE\".\"CODZ\",\n    \"OOLINE\".\"COHZ\",\n    \"OOLINE\".\"TIZO\",\n    \"OOLINE\".\"DLTS\",\n    \"OOLINE\".\"STCD\",\n    \"OOLINE\".\"PRCH\",\n    \"OOLINE\".\"RORC\",\n    \"OOLINE\".\"RORN\",\n    \"OOLINE\".\"RORL\",\n    \"OOLINE\".\"UCOS\",\n    \"OOLINE\".\"COCD\",\n    \"OOLINE\".\"UCCD\",\n    \"OOLINE\".\"CMNO\",\n    \"OOLINE\".\"HDPR\",\n    \"OOLINE\".\"CFIN\",\n    \"OOLINE\".\"ECVS\",\n    \"OOLINE\".\"VTCD\",\n    \"OOLINE\".\"JDCD\",\n    \"OOLINE\".\"DLSP\",\n    \"OOLINE\".\"LNAM\",\n    \"OOLINE\".\"LNA2\",\n    \"OOLINE\".\"DINR\",\n    \"OOLINE\".\"DISX\",\n    \"OOLINE\".\"AGNO\",\n    \"OOLINE\".\"BAGC\",\n    \"OOLINE\".\"BAGD\",\n    \"OOLINE\".\"AGLN\",\n    \"OOLINE\".\"PRRF\",\n    \"OOLINE\".\"NTCD\",\n    \"OOLINE\".\"CNQT\",\n    \"OOLINE\".\"EDFP\",\n    \"OOLINE\".\"SMCD\",\n    \"OOLINE\".\"BNCD\",\n    \"OOLINE\".\"PRAC\",\n    \"OOLINE\".\"VRCD\",\n    \"OOLINE\".\"ECLC\",\n    \"OOLINE\".\"ORCO\",\n    \"OOLINE\".\"PRTX\",\n    \"OOLINE\".\"POTX\",\n    \"OOLINE\".\"DTID\",\n    \"OOLINE\".\"DELS\",\n    \"OOLINE\".\"E0PA\",\n    \"OOLINE\".\"DSGP\",\n    \"OOLINE\".\"MOYE\",\n    \"OOLINE\".\"PUSN\",\n    \"OOLINE\".\"PUTP\",\n    \"OOLINE\".\"QTQL\",\n    \"OOLINE\".\"TEPA\",\n    \"OOLINE\".\"PACT\",\n    \"OOLINE\".\"CUPA\",\n    \"OOLINE\".\"D1QT\",\n    \"OOLINE\".\"CUNO\",\n    \"OOLINE\".\"CUOR\",\n    \"OOLINE\".\"CUPO\",\n    \"OOLINE\".\"CUSX\",\n    \"OOLINE\".\"SMCC\",\n    \"OOLINE\".\"RSCD\",\n    \"OOLINE\".\"MUFT\",\n    \"OOLINE\".\"INPR\",\n    \"OOLINE\".\"CUCT\",\n    \"OOLINE\".\"ABNO\",\n    \"OOLINE\".\"PROJ\",\n    \"OOLINE\".\"ELNO\",\n    \"OOLINE\".\"BPAT\",\n    \"OOLINE\".\"BPST\",\n    \"OOLINE\".\"NOAA\",\n    \"OOLINE\".\"CPRE\",\n    \"OOLINE\".\"HAFE\",\n    \"OOLINE\".\"CAWE\",\n    \"OOLINE\".\"WHSL\",\n    \"OOLINE\".\"BANO\",\n    \"OOLINE\".\"CAMU\",\n    \"OOLINE\".\"ADID\",\n    \"OOLINE\".\"ROUT\",\n    \"OOLINE\".\"RODN\",\n    \"OOLINE\".\"DSDT\",\n    \"OOLINE\".\"DSHM\",\n    \"OOLINE\".\"DSTX\",\n    \"OOLINE\".\"DEFC\",\n    \"OOLINE\".\"PLDT\",\n    \"OOLINE\".\"PLHM\",\n    \"OOLINE\".\"SRCD\",\n    \"OOLINE\".\"SPLC\",\n    \"OOLINE\".\"DLBU\",\n    \"OOLINE\".\"SPOS\",\n    \"OOLINE\".\"FDED\",\n    \"OOLINE\".\"LDED\",\n    \"OOLINE\".\"AETY\",\n    \"OOLINE\".\"ATNR\",\n    \"OOLINE\".\"SCMO\",\n    \"OOLINE\".\"PRPR\",\n    \"OOLINE\".\"CINA\",\n    \"OOLINE\".\"ATV1\",\n    \"OOLINE\".\"ATV2\",\n    \"OOLINE\".\"ATV3\",\n    \"OOLINE\".\"ATV4\",\n    \"OOLINE\".\"ATV5\",\n    \"OOLINE\".\"ATV6\",\n    \"OOLINE\".\"ATV7\",\n    \"OOLINE\".\"ATV8\",\n    \"OOLINE\".\"ATV9\",\n    \"OOLINE\".\"ATV0\",\n    \"OOLINE\".\"CNNR\",\n    \"OOLINE\".\"MNIN\",\n    \"OOLINE\".\"REPN\",\n    \"OOLINE\".\"ATPR\",\n    \"OOLINE\".\"ATMO\",\n    \"OOLINE\".\"ORTY\",\n    \"OOLINE\".\"SUNO\",\n    \"OOLINE\".\"PUPR\",\n    \"OOLINE\".\"PUCD\",\n    \"OOLINE\".\"PPUN\",\n    \"OOLINE\".\"CUCD\",\n    \"OOLINE\".\"ODI1\",\n    \"OOLINE\".\"ODI2\",\n    \"OOLINE\".\"ODI3\",\n    \"OOLINE\".\"OURR\",\n    \"OOLINE\".\"OURT\",\n    \"OOLINE\".\"BUYE\",\n    \"OOLINE\".\"FWHL\",\n    \"OOLINE\".\"PRNO\",\n    \"OOLINE\".\"SCHN\",\n    \"OOLINE\".\"MODL\",\n    \"OOLINE\".\"TEDL\",\n    \"OOLINE\".\"TEL2\",\n    \"OOLINE\".\"RGDT\",\n    \"OOLINE\".\"RGTM\",\n    \"OOLINE\".\"LMDT\",\n    \"OOLINE\".\"CHNO\",\n    \"OOLINE\".\"CHID\",\n    \"OOLINE\".\"RORX\",\n    CAST(DATEDIFF(millisecond,'1970-01-01 00:00:00',LMTS) AS BIGINT) AS \"LMTS\",\n    \"OOLINE\".\"RTQA\",\n    \"OOLINE\".\"RTQT\",\n    \"OOLINE\".\"PRHL\",\n    \"OOLINE\".\"SERN\",\n    \"OOLINE\".\"CTNO\",\n    \"OOLINE\".\"APBA\",\n    \"OOLINE\".\"CFGL\",\n    \"OOLINE\".\"WATP\",\n    \"OOLINE\".\"GWTP\",\n    \"OOLINE\".\"PRHW\",\n    \"OOLINE\".\"SERW\",\n    \"OOLINE\".\"PWNR\",\n    \"OOLINE\".\"PWSX\",\n    \"OOLINE\".\"EWST\",\n    \"OOLINE\".\"AGNB\",\n    \"OOLINE\".\"CTNS\",\n    \"OOLINE\".\"WATQ\",\n    \"OOLINE\".\"TECN\",\n    \"OOLINE\".\"INAP\",\n    \"OOLINE\".\"PCNR\",\n    \"OOLINE\".\"PCSU\",\n    \"OOLINE\".\"RELI\",\n    \"OOLINE\".\"PIDE\",\n    \"OOLINE\".\"PCLA\",\n    \"OOLINE\".\"BOP1\",\n    \"OOLINE\".\"SCLB\",\n    \"OOLINE\".\"OFNO\",\n    \"OOLINE\".\"VERS\",\n    \"OOLINE\".\"OFNR\",\n    \"OOLINE\".\"OFSX\",\n    \"OOLINE\".\"DECU\",\n    \"OOLINE\".\"TEPY\",\n    \"OOLINE\".\"ARST\",\n    \"OOLINE\".\"RSC1\",\n    \"OOLINE\".\"PMOR\",\n    \"OOLINE\".\"CBSM\",\n    \"OOLINE\".\"INIP\",\n    \"OOLINE\".\"UPAV\",\n    \"OOLINE\".\"QTBC\",\n    \"OOLINE\".\"MPID\",\n    \"OOLINE\".\"TOMU\",\n    \"OOLINE\".\"ENNO\",\n    \"OOLINE\".\"LNCL\",\n    \"OOLINE\".\"PRIO\",\n    \"OOLINE\".\"CCSA\",\n    \"OOLINE\".\"RAGN\",\n    \"OOLINE\".\"RASN\",\n    \"OOLINE\".\"CLAT\",\n    \"OOLINE\".\"OLSC\",\n    \"OOLINE\".\"MIGI\",\n    \"OOLINE\".\"PIKD\",\n    \"OOLINE\".\"DPOL\",\n    \"OOLINE\".\"RSC5\",\n    \"OOLINE\".\"RSC6\",\n    \"OOLINE\".\"RSC7\",\n    \"OOLINE\".\"MPRD\",\n    \"OOLINE\".\"UCA1\",\n    \"OOLINE\".\"UCA2\",\n    \"OOLINE\".\"UCA3\",\n    \"OOLINE\".\"UCA4\",\n    \"OOLINE\".\"UCA5\",\n    \"OOLINE\".\"UCA6\",\n    \"OOLINE\".\"UCA7\",\n    \"OOLINE\".\"UCA8\",\n    \"OOLINE\".\"UCA9\",\n    \"OOLINE\".\"UCA0\",\n    \"OOLINE\".\"UDN1\",\n    \"OOLINE\".\"UDN2\",\n    \"OOLINE\".\"UDN3\",\n    \"OOLINE\".\"UDN4\",\n    \"OOLINE\".\"UDN5\",\n    \"OOLINE\".\"UDN6\",\n    \"OOLINE\".\"UID1\",\n    \"OOLINE\".\"UID2\",\n    \"OOLINE\".\"UID3\",\n    \"OOLINE\".\"UCT1\",\n    \"OOLINE\".\"accountingEntity\",\n    \"OOLINE\".\"variationNumber\",\n    \"OOLINE\".\"timestamp\",\n    \"OOLINE\".deleted,\n    \"OOLINE\".archived\nFROM \n    \"OOLINE\"\nWHERE\n    CONO = 100\n    and\n  (CAST(\"timestamp\" as timestamp)) >= '@{pipeline().parameters.start_month}' \n  and \n  (CAST(\"timestamp\" as timestamp)) < '@{pipeline().parameters.end_month}'",
+							"type": "Expression"
+						},
+						"BaseURL": "https://mingle-ionapi.inforcloudsuite.com/EMCO_TST/DATAFABRIC/compass/v2/",
+						"BearerToken": {
+							"value": "@variables('Bearer')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "UntilRecordCountReached",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetCurrentRow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetLimit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PerformQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(int(variables('CurrentRow')), activity('PerformQuery').output.pipelineReturnValue.RowCount)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy OSBSTD Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"maxConcurrentConnections": 1,
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "Authorization: @{variables('Bearer')}\nAccept: text/csv",
+											"type": "Expression"
+										},
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzurePostgreSQLSink",
+									"writeBatchSize": 1000000,
+									"writeBatchTimeout": "00:30:00",
+									"writeMethod": "BulkInsert"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "CONO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CONO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ORNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PONR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PONR",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "POSX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "POSX",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIVI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIVI",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "LTYP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LTYP",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ORST",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORST",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "FACI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "FACI",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "WHLO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WHLO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ITNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ITNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "REPI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "REPI",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ITDS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ITDS",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TEDS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TEDS",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ORQT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORQT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ORQA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORQA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "RNQT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RNQT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "RNQA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RNQA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ALQT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ALQT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ALQA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ALQA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "PLQT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PLQT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "PLQA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PLQA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DLQT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DLQT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DLQA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DLQA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "IVQT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "IVQT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "IVQA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "IVQA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DCCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DCCD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ALUN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ALUN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DCCA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DCCA",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "COFA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "COFA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DMCF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMCF",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "SPUN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SPUN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PCOF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PCOF",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DCCS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DCCS",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "COFS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "COFS",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DMCS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DMCS",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "POPN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "POPN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ALWT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ALWT",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ALWQ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ALWQ",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "SAPR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SAPR",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "NEPR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "NEPR",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "SACD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SACD",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "PRMO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRMO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DIC1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIC1",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIC2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIC2",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIC3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIC3",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIC4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIC4",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIC5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIC5",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIC6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIC6",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DIP1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIP1",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIP2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIP2",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIP3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIP3",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIP4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIP4",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIP5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIP5",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIP6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIP6",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIA1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIA1",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIA2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIA2",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIA3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIA3",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIA4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIA4",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIA5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIA5",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DIA6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIA6",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "CMP1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CMP1",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CMP2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CMP2",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CMP3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CMP3",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CMP4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CMP4",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CMP5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CMP5",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CMP6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CMP6",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DIBE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIBE",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DIRE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DIRE",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DCHA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DCHA",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DPST",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DPST",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DDSU",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DDSU",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "IDSC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "IDSC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ACRF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ACRF",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "OTDI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OTDI",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DWDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DWDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "DWHM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DWHM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CODT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CODT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "COHM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "COHM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DWDZ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DWDZ",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "DWHZ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DWHZ",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CODZ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CODZ",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "COHZ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "COHZ",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "TIZO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TIZO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DLTS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DLTS",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "STCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "STCD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PRCH",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRCH",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "RORC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RORC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "RORN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RORN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RORL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RORL",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "UCOS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCOS",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "COCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "COCD",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "UCCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCCD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CMNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CMNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "HDPR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HDPR",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CFIN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CFIN",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "ECVS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ECVS",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "VTCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "VTCD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "JDCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "JDCD",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DLSP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DLSP",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "LNAM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LNAM",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "LNA2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LNA2",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "DINR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DINR",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "DISX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DISX",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "AGNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AGNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "BAGC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BAGC",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "BAGD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BAGD",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "AGLN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AGLN",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "PRRF",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRRF",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "NTCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "NTCD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CNQT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CNQT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "EDFP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "EDFP",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "SMCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SMCD",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "BNCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BNCD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PRAC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRAC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "VRCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "VRCD",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ECLC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ECLC",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ORCO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORCO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PRTX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRTX",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "POTX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "POTX",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "DTID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DTID",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "DELS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DELS",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "E0PA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "E0PA",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DSGP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DSGP",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "MOYE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MOYE",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PUSN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PUSN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PUTP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PUTP",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "QTQL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "QTQL",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "TEPA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TEPA",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PACT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PACT",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CUPA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUPA",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "D1QT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "D1QT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "CUNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CUOR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUOR",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CUPO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUPO",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CUSX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUSX",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "SMCC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SMCC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "RSCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RSCD",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "MUFT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MUFT",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "INPR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "INPR",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "CUCT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUCT",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ABNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ABNO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PROJ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PROJ",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ELNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ELNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "BPAT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BPAT",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "BPST",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BPST",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "NOAA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "NOAA",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CPRE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CPRE",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "HAFE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HAFE",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CAWE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CAWE",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "WHSL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WHSL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "BANO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BANO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CAMU",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CAMU",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ADID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ADID",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ROUT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ROUT",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RODN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RODN",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DSDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DSDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "DSHM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DSHM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DSTX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DSTX",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DEFC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DEFC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PLDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PLDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "PLHM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PLHM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "SRCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SRCD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "SPLC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SPLC",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "DLBU",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DLBU",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "SPOS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SPOS",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "FDED",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "FDED",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "LDED",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LDED",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "AETY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AETY",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ATNR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATNR",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "SCMO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SCMO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PRPR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRPR",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CINA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CINA",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV1",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV2",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV3",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV4",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV5",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV6",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV7",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV7",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV8",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV8",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV9",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV9",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ATV0",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATV0",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CNNR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CNNR",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "MNIN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MNIN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "REPN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "REPN",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "ATPR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATPR",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ATMO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ATMO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ORTY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORTY",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "SUNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SUNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PUPR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PUPR",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "PUCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PUCD",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "PPUN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PPUN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CUCD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUCD",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ODI1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ODI1",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ODI2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ODI2",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ODI3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ODI3",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "OURR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OURR",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "OURT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OURT",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "BUYE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BUYE",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "FWHL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "FWHL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PRNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "SCHN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SCHN",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "MODL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MODL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TEDL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TEDL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TEL2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TEL2",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RGDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RGDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "RGTM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RGTM",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "LMDT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LMDT",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "CHNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CHNO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CHID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CHID",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RORX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RORX",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "LMTS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LMTS",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "RTQA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RTQA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "RTQT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RTQT",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "PRHL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRHL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "SERN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SERN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CTNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CTNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "APBA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "APBA",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CFGL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CFGL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "WATP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WATP",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "GWTP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "GWTP",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PRHW",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRHW",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "SERW",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SERW",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PWNR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PWNR",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "PWSX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PWSX",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "EWST",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "EWST",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "AGNB",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AGNB",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CTNS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CTNS",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "WATQ",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "WATQ",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "TECN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TECN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "INAP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "INAP",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PCNR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PCNR",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "PCSU",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PCSU",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "RELI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RELI",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "PIDE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PIDE",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PCLA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PCLA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "BOP1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "BOP1",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "SCLB",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SCLB",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "OFNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OFNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "VERS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "VERS",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "OFNR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OFNR",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "OFSX",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OFSX",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DECU",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DECU",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "TEPY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TEPY",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "ARST",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ARST",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "RSC1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RSC1",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PMOR",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PMOR",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CBSM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CBSM",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "INIP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "INIP",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "UPAV",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UPAV",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "QTBC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "QTBC",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "MPID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MPID",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "TOMU",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "TOMU",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "ENNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ENNO",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "LNCL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "LNCL",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "PRIO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PRIO",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "CCSA",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CCSA",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "RAGN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RAGN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RASN",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RASN",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "CLAT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CLAT",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "OLSC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "OLSC",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "MIGI",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MIGI",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "PIKD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "PIKD",
+												"type": "Int16",
+												"physicalType": "smallint"
+											}
+										},
+										{
+											"source": {
+												"name": "DPOL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DPOL",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RSC5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RSC5",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RSC6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RSC6",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "RSC7",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "RSC7",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "MPRD",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "MPRD",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA1",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA2",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA3",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA4",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA5",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA6",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA7",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA7",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA8",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA8",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA9",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA9",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UCA0",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCA0",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "UDN1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UDN1",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "UDN2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UDN2",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "UDN3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UDN3",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "UDN4",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UDN4",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "UDN5",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UDN5",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "UDN6",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UDN6",
+												"type": "Decimal",
+												"physicalType": "numeric"
+											}
+										},
+										{
+											"source": {
+												"name": "UID1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UID1",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "UID2",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UID2",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "UID3",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UID3",
+												"type": "Int32",
+												"physicalType": "integer"
+											}
+										},
+										{
+											"source": {
+												"name": "UCT1",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "UCT1",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "accountingEntity",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "accountingEntity",
+												"type": "String",
+												"physicalType": "text"
+											}
+										},
+										{
+											"source": {
+												"name": "variationNumber",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "variationNumber",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "timestamp",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "timestamp",
+												"type": "DateTime",
+												"physicalType": "timestamp without time zone"
+											}
+										},
+										{
+											"source": {
+												"name": "deleted",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "deleted",
+												"type": "Boolean",
+												"physicalType": "boolean"
+											}
+										},
+										{
+											"source": {
+												"name": "archived",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "archived",
+												"type": "Boolean",
+												"physicalType": "boolean"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Compass_OOLINE_Dataset",
+									"type": "DatasetReference",
+									"parameters": {
+										"QueryId": {
+											"value": "@activity('PerformQuery').output.pipelineReturnValue.QueryId",
+											"type": "Expression"
+										},
+										"Limit": {
+											"value": "@int(variables('Limit'))",
+											"type": "Expression"
+										},
+										"Offset": {
+											"value": "@int(variables('CurrentRow'))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "OOLINE_Dataset",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "WriteCurrentRowVariable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "PerformMathOnCurrentRow",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentRow",
+								"value": {
+									"value": "@variables('TempCurrentRow')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "PerformMathOnCurrentRow",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy OSBSTD Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCurrentRow",
+								"value": {
+									"value": "@string(add(int(variables('CurrentRow')), int(variables('Limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FailUntilLoop",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Copy OSBSTD Data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "UnableToCopyData",
+								"errorCode": "2"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "SetCurrentRow",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentRow",
+					"value": "0"
+				}
+			},
+			{
+				"name": "SetLimit",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Limit",
+					"value": "35000"
+				}
+			}
+		],
+		"parameters": {
+			"start_month": {
+				"type": "string"
+			},
+			"end_month": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"Bearer": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			},
+			"temp": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/Staging Pipeline/Sales Schema"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,445 @@
+{
+	"name": "OSBSTD_STAGING_FullLoad",
+	"properties": {
+		"activities": [
+			{
+				"name": "Login",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Set False",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Login",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "SetBearer",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Bearer",
+					"value": {
+						"value": "@concat('Bearer ',activity('Login').output.pipelineReturnValue.access_token)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "PerformQuery",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PerformQuery",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Query": {
+							"value": "SELECT\n  \"OSBSTD\".\"accountingEntity\",\n  \"OSBSTD\".\"variationNumber\",\n  \"OSBSTD\".\"timestamp\",\n  \"OSBSTD\".\"deleted\",\n  \"OSBSTD\".\"archived\",\n  \"OSBSTD\".\"CONO\",\n  \"OSBSTD\".\"DIVI\",\n  \"OSBSTD\".\"FACI\",\n  \"OSBSTD\".\"ORNO\",\n  \"OSBSTD\".\"DLIX\",\n  \"OSBSTD\".\"PONR\",\n  \"OSBSTD\".\"POSX\",\n  \"OSBSTD\".\"IVNO\",\n  \"OSBSTD\".\"ORDT\",\n  \"OSBSTD\".\"DWDT\",\n  \"OSBSTD\".\"CODT\",\n  \"OSBSTD\".\"DLDT\",\n  \"OSBSTD\".\"IVDT\",\n  \"OSBSTD\".\"YEA4\",\n  \"OSBSTD\".\"ACDT\",\n  \"OSBSTD\".\"CUNO\",\n  \"OSBSTD\".\"CUCL\",\n  \"OSBSTD\".\"CUTP\",\n  \"OSBSTD\".\"CUST\",\n  \"OSBSTD\".\"ORTP\",\n  \"OSBSTD\".\"AGNT\",\n  \"OSBSTD\".\"PYNO\",\n  \"OSBSTD\".\"CHL1\",\n  \"OSBSTD\".\"CHL2\",\n  \"OSBSTD\".\"CHL3\",\n  \"OSBSTD\".\"CHL4\",\n  \"OSBSTD\".\"CUCD\",\n  \"OSBSTD\".\"RAIN\",\n  \"OSBSTD\".\"DMCU\",\n  \"OSBSTD\".\"SMCD\",\n  \"OSBSTD\".\"SDST\",\n  \"OSBSTD\".\"CSCD\",\n  \"OSBSTD\".\"FRE1\",\n  \"OSBSTD\".\"FRE2\",\n  \"OSBSTD\".\"WCON\",\n  \"OSBSTD\".\"BPAT\",\n  \"OSBSTD\".\"WHLO\",\n  \"OSBSTD\".\"ITNO\",\n  \"OSBSTD\".\"ITGR\",\n  \"OSBSTD\".\"ITTY\",\n  \"OSBSTD\".\"ITCL\",\n  \"OSBSTD\".\"SUNO\",\n  \"OSBSTD\".\"FRE3\",\n  \"OSBSTD\".\"FRE4\",\n  \"OSBSTD\".\"REPI\",\n  \"OSBSTD\".\"LTYP\",\n  \"OSBSTD\".\"MUFT\",\n  \"OSBSTD\".\"STUN\",\n  \"OSBSTD\".\"ALUN\",\n  \"OSBSTD\".\"SPUN\",\n  \"OSBSTD\".\"PRMO\",\n  \"OSBSTD\".\"DISY\",\n  \"OSBSTD\".\"CMP1\",\n  \"OSBSTD\".\"CMP2\",\n  \"OSBSTD\".\"CMP3\",\n  \"OSBSTD\".\"CMP4\",\n  \"OSBSTD\".\"CMP5\",\n  \"OSBSTD\".\"CMP6\",\n  \"OSBSTD\".\"PRCH\",\n  \"OSBSTD\".\"UCCD\",\n  \"OSBSTD\".\"SMCC\",\n  \"OSBSTD\".\"CMNO\",\n  \"OSBSTD\".\"VANO\",\n  \"OSBSTD\".\"CFIN\",\n  \"OSBSTD\".\"ORTK\",\n  \"OSBSTD\".\"ADID\",\n  \"OSBSTD\".\"FECN\",\n  \"OSBSTD\".\"AGNO\",\n  \"OSBSTD\".\"DPNR\",\n  \"OSBSTD\".\"ORIG\",\n  \"OSBSTD\".\"IDCD\",\n  \"OSBSTD\".\"JOBN\",\n  \"OSBSTD\".\"JBSX\",\n  \"OSBSTD\".\"SETP\",\n  \"OSBSTD\".\"INNO\",\n  \"OSBSTD\".\"IITN\",\n  \"OSBSTD\".\"INGR\",\n  \"OSBSTD\".\"SRES\",\n  \"OSBSTD\".\"TECH\",\n  \"OSBSTD\".\"ESCO\",\n  \"OSBSTD\".\"ERCO\",\n  \"OSBSTD\".\"ERCL\",\n  \"OSBSTD\".\"MECO\",\n  \"OSBSTD\".\"MECL\",\n  \"OSBSTD\".\"CTNO\",\n  \"OSBSTD\".\"AGTP\",\n  \"OSBSTD\".\"CONS\",\n  \"OSBSTD\".\"MINO\",\n  \"OSBSTD\".\"RSCD\",\n  \"OSBSTD\".\"PROJ\",\n  \"OSBSTD\".\"ELNO\",\n  \"OSBSTD\".\"IVQT\",\n  \"OSBSTD\".\"OFQS\",\n  \"OSBSTD\".\"IVQA\",\n  \"OSBSTD\".\"IVQS\",\n  \"OSBSTD\".\"ORQT\",\n  \"OSBSTD\".\"ORQS\",\n  \"OSBSTD\".\"ORQA\",\n  \"OSBSTD\".\"ORQB\",\n  \"OSBSTD\".\"GRWE\",\n  \"OSBSTD\".\"NEWE\",\n  \"OSBSTD\".\"VOL3\",\n  \"OSBSTD\".\"SAAM\",\n  \"OSBSTD\".\"SGAM\",\n  \"OSBSTD\".\"CUAM\",\n  \"OSBSTD\".\"DIA1\",\n  \"OSBSTD\".\"DIA2\",\n  \"OSBSTD\".\"DIA3\",\n  \"OSBSTD\".\"DIA4\",\n  \"OSBSTD\".\"DIA5\",\n  \"OSBSTD\".\"DIA6\",\n  \"OSBSTD\".\"OFRA\",\n  \"OSBSTD\".\"UCOS\",\n  \"OSBSTD\".\"DCOS\",\n  \"OSBSTD\".\"MFAM\",\n  \"OSBSTD\".\"ONK1\",\n  \"OSBSTD\".\"ONK2\",\n  \"OSBSTD\".\"ONK3\",\n  \"OSBSTD\".\"ONK4\",\n  \"OSBSTD\".\"ONK5\",\n  \"OSBSTD\".\"ALBO\",\n  \"OSBSTD\".\"DDF1\",\n  \"OSBSTD\".\"DDF2\",\n  \"OSBSTD\".\"DDF3\",\n  \"OSBSTD\".\"DDF4\",\n  \"OSBSTD\".\"DDF5\",\n  \"OSBSTD\".\"TDEL\",\n  \"OSBSTD\".\"TORL\",\n  \"OSBSTD\".\"FULL\",\n  \"OSBSTD\".\"RQTY\",\n  \"OSBSTD\".\"RTME\",\n  \"OSBSTD\".\"LOWM\",\n  \"OSBSTD\".\"MPRO\",\n  \"OSBSTD\".\"BAOL\",\n  \"OSBSTD\".\"BGOL\",\n  \"OSBSTD\".\"CAOL\",\n  \"OSBSTD\".\"CGOL\",\n  \"OSBSTD\".\"INRC\",\n  \"OSBSTD\".\"IITG\",\n  \"OSBSTD\".\"FCTN\",\n  \"OSBSTD\".\"ASST\",\n  \"OSBSTD\".\"HDPR\",\n  \"OSBSTD\".\"SDEP\",\n  \"OSBSTD\".\"BUAR\",\n  \"OSBSTD\".\"STRT\",\n  \"OSBSTD\".\"SUFI\",\n  \"OSBSTD\".\"ROUT\",\n  \"OSBSTD\".\"RODN\",\n  \"OSBSTD\".\"DEMA\",\n  \"OSBSTD\".\"ATV1\",\n  \"OSBSTD\".\"ATV2\",\n  \"OSBSTD\".\"ATV3\",\n  \"OSBSTD\".\"ATV4\",\n  \"OSBSTD\".\"ATV5\",\n  \"OSBSTD\".\"AAV1\",\n  \"OSBSTD\".\"AAV2\",\n  \"OSBSTD\".\"AAV3\",\n  \"OSBSTD\".\"AAV4\",\n  \"OSBSTD\".\"AAV5\",\n  \"OSBSTD\".\"ATMO\",\n  \"OSBSTD\".\"MTCO\",\n  \"OSBSTD\".\"MTX1\",\n  \"OSBSTD\".\"MTX2\",\n  \"OSBSTD\".\"CINF\",\n  \"OSBSTD\".\"CSHC\",\n  \"OSBSTD\".\"AOTP\",\n  \"OSBSTD\".\"ASCL\",\n  \"OSBSTD\".\"ASCA\",\n  \"OSBSTD\".\"RSDJ\",\n  \"OSBSTD\".\"RFDJ\",\n  \"OSBSTD\".\"SCOD\",\n  \"OSBSTD\".\"PRRF\",\n  \"OSBSTD\".\"INTY\",\n  \"OSBSTD\".\"CUOW\",\n  \"OSBSTD\".\"BRAN\",\n  \"OSBSTD\".\"CFE1\",\n  \"OSBSTD\".\"CFE2\",\n  \"OSBSTD\".\"CFE3\",\n  \"OSBSTD\".\"CFE4\",\n  \"OSBSTD\".\"CFE5\",\n  \"OSBSTD\".\"CFE6\",\n  \"OSBSTD\".\"CFE7\",\n  \"OSBSTD\".\"CFE8\",\n  \"OSBSTD\".\"CFE9\",\n  \"OSBSTD\".\"DLNI\",\n  \"OSBSTD\".\"RGDT\",\n  \"OSBSTD\".\"RGTM\",\n  \"OSBSTD\".\"LMDT\",\n  \"OSBSTD\".\"CHNO\",\n  \"OSBSTD\".\"CHID\",\n  \"OSBSTD\".\"PRHL\",\n  \"OSBSTD\".\"SERN\",\n  \"OSBSTD\".\"APBA\",\n  \"OSBSTD\".\"CFGL\",\n  \"OSBSTD\".\"WATP\",\n  \"OSBSTD\".\"GWTP\",\n  \"OSBSTD\".\"PRHW\",\n  \"OSBSTD\".\"SERW\",\n  \"OSBSTD\".\"INPX\",\n  \"OSBSTD\".\"EXIN\",\n  \"OSBSTD\".\"DMA2\",\n  \"OSBSTD\".\"CAWE\",\n  \"OSBSTD\".\"TECN\",\n  \"OSBSTD\".\"INAP\",\n  CAST(DATEDIFF(millisecond,'1970-01-01 00:00:00',LMTS) AS BIGINT) AS \"LMTS\",\n  \"OSBSTD\".\"SMC0\",\n  \"OSBSTD\".\"SMC1\",\n  \"OSBSTD\".\"SMC2\",\n  \"OSBSTD\".\"SMC3\",\n  \"OSBSTD\".\"SMC4\",\n  \"OSBSTD\".\"SMC5\",\n  \"OSBSTD\".\"SMC6\",\n  \"OSBSTD\".\"SMC7\",\n  \"OSBSTD\".\"SMC8\",\n  \"OSBSTD\".\"SMC9\",\n  \"OSBSTD\".\"PIDE\",\n  \"OSBSTD\".\"PCLA\",\n  \"OSBSTD\".\"ACOS\",\n  \"OSBSTD\".\"BOP1\",\n  \"OSBSTD\".\"TEPY\",\n  \"OSBSTD\".\"RSC1\",\n  \"OSBSTD\".\"DECU\",\n  \"OSBSTD\".\"DPCL\",\n  \"OSBSTD\".\"ENNO\",\n  \"OSBSTD\".\"LNCL\",\n  \"OSBSTD\".\"APRM\",\n  \"OSBSTD\".\"RQWH\",\n  \"OSBSTD\".\"RAGN\",\n  \"OSBSTD\".\"CLAT\",\n  \"OSBSTD\".\"MIGI\",\n  \"OSBSTD\".\"RSC5\",\n  \"OSBSTD\".\"RSC6\",\n  \"OSBSTD\".\"RSC7\",\n  \"OSBSTD\".\"ICTR\",\n  \"OSBSTD\".\"CHL5\",\n  \"OSBSTD\".\"CHL6\",\n  \"OSBSTD\".\"CHL7\",\n  \"OSBSTD\".\"CHL8\",\n  \"OSBSTD\".\"CHL9\"\nFROM\n  \"OSBSTD\"\nWHERE\n  (CAST(\"timestamp\" as timestamp)) >= '@{pipeline().parameters.start_month}' \n  and \n  (CAST(\"timestamp\" as timestamp)) < '@{pipeline().parameters.end_month}'",
+							"type": "Expression"
+						},
+						"BaseURL": "https://mingle-ionapi.inforcloudsuite.com/EMCO_TST/DATAFABRIC/compass/v2/",
+						"BearerToken": {
+							"value": "@variables('Bearer')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "UntilRecordCountReached",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetCurrentRow",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "SetLimit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "PerformQuery",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greaterOrEquals(int(variables('CurrentRow')), activity('PerformQuery').output.pipelineReturnValue.RowCount)",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy OSBSTD Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"maxConcurrentConnections": 3,
+										"requestMethod": "GET",
+										"additionalHeaders": {
+											"value": "Authorization: @{variables('Bearer')}\nAccept: text/csv",
+											"type": "Expression"
+										},
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings",
+										"compressionProperties": {
+											"type": "ZipDeflateReadSettings"
+										}
+									}
+								},
+								"sink": {
+									"type": "AzurePostgreSQLSink",
+									"writeBatchSize": 1000000,
+									"writeBatchTimeout": "00:30:00",
+									"writeMethod": "BulkInsert"
+								},
+								"enableStaging": false,
+								"parallelCopies": 25,
+								"dataIntegrationUnits": 2,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Compass_OSBSTD_Dataset",
+									"type": "DatasetReference",
+									"parameters": {
+										"QueryId": {
+											"value": "@activity('PerformQuery').output.pipelineReturnValue.QueryId",
+											"type": "Expression"
+										},
+										"Limit": {
+											"value": "@int(variables('Limit'))",
+											"type": "Expression"
+										},
+										"Offset": {
+											"value": "@int(variables('CurrentRow'))",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "OSBSTD_Dataset",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "WriteCurrentRowVariable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "PerformMathOnCurrentRow",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentRow",
+								"value": {
+									"value": "@variables('TempCurrentRow')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "PerformMathOnCurrentRow",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy OSBSTD Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCurrentRow",
+								"value": {
+									"value": "@string(add(int(variables('CurrentRow')), int(variables('Limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FailUntilLoop",
+							"type": "Fail",
+							"dependsOn": [
+								{
+									"activity": "Copy OSBSTD Data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"message": "UnableToCopyData",
+								"errorCode": "2"
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "SetCurrentRow",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentRow",
+					"value": "0"
+				}
+			},
+			{
+				"name": "SetLimit",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Limit",
+					"value": "40000"
+				}
+			},
+			{
+				"name": "Set False",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ContinueLoop",
+					"value": {
+						"value": "@bool(0)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Renewal Token",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "SetBearer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@variables('ContinueLoop')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Wait 50mins",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 6600
+							}
+						},
+						{
+							"name": "SetBearerToken",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Login_2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Bearer",
+								"value": {
+									"value": "@concat('Bearer ',activity('Login_2').output.pipelineReturnValue.access_token)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Login_2",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Wait 50mins",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Login",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "Stop renewal",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "UntilRecordCountReached",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ContinueLoop",
+					"value": {
+						"value": "@bool(1)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"start_month": {
+				"type": "string"
+			},
+			"end_month": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"Bearer": {
+				"type": "String"
+			},
+			"CurrentRow": {
+				"type": "String"
+			},
+			"Limit": {
+				"type": "String"
+			},
+			"TempCurrentRow": {
+				"type": "String"
+			},
+			"temp": {
+				"type": "String"
+			},
+			"ContinueLoop": {
+				"type": "Boolean"
+			}
+		},
+		"folder": {
+			"name": "TST/Tables/Staging Pipeline"
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-06-18T10:29:18Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
